@@ -1,0 +1,12 @@
+{
+  "success_rate": 1.0,
+  "mean_return": 19.01173141697994,
+  "mean_steps": 110.23333333333333,
+  "mean_final_dist": 0.017957812060336996,
+  "reasons": {
+    "success": 30
+  },
+  "cross_track_mean": 0.020826840197794284,
+  "level": 0,
+  "timesteps": 5950000
+}

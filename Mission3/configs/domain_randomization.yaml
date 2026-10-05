@@ -1,0 +1,43 @@
+# Mission3/configs/domain_randomization.yaml
+# Konfigurasi ENV Misi 3 (path following + obstacle avoidance, konsep stargaze).
+robot_dynamics:
+  payload_mass_range: [0.0, 1.0]
+  gravity_scale_range: [0.98, 1.02]
+randomization: {init_joint_noise: 0.05, obs_noise_std: 0.005}
+workspace:
+  finish_point_radius_range: [0.35, 0.48]
+  finish_point_height_range: [0.25, 0.45]
+  finish_point_azimuth_range: [-3.1416, 3.1416]
+  base_height_offset: 0.181
+physics: {n_substeps: 10, gravity_compensation: true}
+action: {max_pos_delta: 0.05, max_rot_delta: 0.08, max_joint_delta: 0.25, max_orientation_dev_deg: 30.0}
+ik: {max_iters: 60, pos_tol: 0.0001, rot_tol: 0.002, rot_weight: 0.5}
+safety: {terminate_on_contact: true, gripper_collision_radius: 0.04}
+validation: {max_scenario_attempts: 40, ik_pos_tol: 0.002, waypoint_step: 0.04, obstacle_margin: 0.01, approach_obstacle_margin: 0.15}  # = level akhir kurikulum (eval & debug harus setara dengan training)
+episode: {max_steps: 350, success_pos_threshold: 0.02}
+reward: {time_penalty: -0.02, distance_penalty: 0.5, progress_weight: 20.0, smoothness_penalty: 0.05,
+  contact_penalty: -10.0, cross_track_penalty: 150.0, phase_transition_bonus: 5.0,
+  success_reward: 40.0, obstacle_penalty: 0.02, obstacle_eps: 0.01, collision_penalty: -100.0,
+  # shaping rintangan berbasis POTENSIAL: F = gamma*Phi(s') - Phi(s), Phi(c) = -k(1/(c+eps) - 1/(d_safe+eps)).
+  # 'state' = penalti per-langkah lama (membuat diam dekat rintangan lebih murah dari bergerak).
+  obstacle_mode: potential, obstacle_potential_k: 0.3, obstacle_gamma: 0.995,
+  # penalti cross-track fase PENDEKATAN terhadap jalur referensi home->T1 (0 = nonaktif)
+  approach_track_penalty: 0.0}
+path_task: {t1_reach_threshold: 0.02, cross_track_cap: 0.08, approach_track_cap: 0.25}
+mission3:
+  constellation_L_values: [0.1, 0.2, 0.3]
+  constellation_grid_size: 3
+  constellation_n_points_per_face_range: [3, 5]
+  constellation_jitter: 0.35
+  constellation_min_radius: 0.08
+  obstacle_radius: 0.015
+  d_safe: 0.12
+  collision_margin: 0.0
+  min_line_clearance: 0.08
+  start_selection: random_safe
+  initial_face: auto
+  forbidden_faces: [-z]
+  home_keepout: 0.06
+  max_prune_fraction: 0.6
+  min_obstacles: 6
+  start_reach: {r_min: 0.25, r_max: 0.95, z_min: 0.12, z_max: 0.95}

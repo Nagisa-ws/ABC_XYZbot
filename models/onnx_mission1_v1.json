@@ -1,0 +1,9 @@
+{
+  "mission": 1,
+  "obs_dim": 57,
+  "source_model": "/mnt/c/Users/HP/Mujoco_WS/curriculum_arm_rl/checkpoints/mission1/best_model.zip",
+  "vecnormalize": "/mnt/c/Users/HP/Mujoco_WS/curriculum_arm_rl/checkpoints/mission1/best_vecnormalize.pkl",
+  "source": "best",
+  "timesteps": 6000640,
+  "interrupted": false
+}

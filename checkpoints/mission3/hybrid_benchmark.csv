@@ -1,0 +1,601 @@
+mission,threshold_mm,policy,seed,reason,steps,path_angle_from_down_deg,steep_descent,cross_track_mean_mm,nose_err_mean_deg,nose_lt10_frac
+3,20.0,RL saja,20000,timeout,350,47.0,1,,,
+3,20.0,RL saja,20001,success,140,61.9,0,33.96,62.1,0.0
+3,20.0,RL saja,20002,success,79,27.0,1,9.01,48.9,0.0
+3,20.0,RL saja,20003,success,84,40.8,1,16.39,60.4,0.0
+3,20.0,RL saja,20004,success,77,41.3,1,18.97,28.1,0.0
+3,20.0,RL saja,20005,success,92,8.3,1,13.52,26.5,0.0
+3,20.0,RL saja,20006,success,123,88.2,0,14.02,77.0,0.0
+3,20.0,RL saja,20007,collision,206,97.4,0,35.18,111.3,0.0
+3,20.0,RL saja,20008,success,74,24.2,1,19.28,24.2,0.0
+3,20.0,RL saja,20009,collision,93,80.2,0,19.22,96.1,0.0
+3,20.0,RL saja,20010,success,108,25.7,1,30.73,23.8,0.0
+3,20.0,RL saja,20011,success,128,40.8,1,29.99,26.1,0.0
+3,20.0,RL saja,20012,success,155,125.1,0,25.96,106.9,0.0
+3,20.0,RL saja,20013,collision,85,123.5,0,44.09,136.2,0.0
+3,20.0,RL saja,20014,success,227,30.4,1,26.87,37.6,0.0
+3,20.0,RL saja,20015,collision,90,63.3,0,30.38,51.6,0.0
+3,20.0,RL saja,20016,success,87,46.3,1,26.38,41.9,0.0
+3,20.0,RL saja,20017,success,157,95.2,0,27.02,86.1,0.0
+3,20.0,RL saja,20018,success,163,43.1,1,25.33,59.8,0.0
+3,20.0,RL saja,20019,success,100,88.0,0,23.18,79.1,0.0
+3,20.0,RL saja,20020,success,184,34.1,1,37.76,51.0,0.0
+3,20.0,RL saja,20021,success,156,29.7,1,23.85,41.7,0.0
+3,20.0,RL saja,20022,timeout,350,28.6,1,,,
+3,20.0,RL saja,20023,success,95,27.0,1,18.35,49.0,0.0
+3,20.0,RL saja,20024,success,94,114.1,0,34.17,97.3,0.0
+3,20.0,RL saja,20025,success,93,117.3,0,54.79,99.4,0.0
+3,20.0,RL saja,20026,collision,126,39.7,1,28.8,31.6,0.0
+3,20.0,RL saja,20027,success,187,10.0,1,25.06,20.6,0.0
+3,20.0,RL saja,20028,success,82,19.5,1,19.95,32.4,0.0
+3,20.0,RL saja,20029,success,94,29.7,1,17.02,42.8,0.0
+3,20.0,RL saja,20030,collision,151,56.0,1,13.52,62.4,0.0
+3,20.0,RL saja,20031,success,79,13.7,1,16.13,35.2,0.0
+3,20.0,RL saja,20032,success,83,58.0,1,36.46,37.1,0.0
+3,20.0,RL saja,20033,success,117,88.3,0,25.2,80.6,0.0
+3,20.0,RL saja,20034,success,108,73.5,0,21.13,61.5,0.0
+3,20.0,RL saja,20035,success,97,103.4,0,27.19,97.7,0.0
+3,20.0,RL saja,20036,success,86,84.9,0,38.22,62.5,0.0
+3,20.0,RL saja,20037,success,145,76.8,0,26.29,61.0,0.0
+3,20.0,RL saja,20038,success,92,49.3,1,23.12,37.8,0.0
+3,20.0,RL saja,20039,collision,333,75.9,0,47.14,85.3,0.0
+3,20.0,RL saja,20040,success,112,60.3,0,33.39,64.2,0.0
+3,20.0,RL saja,20041,success,105,45.8,1,27.19,45.0,0.0
+3,20.0,RL saja,20042,success,109,73.2,0,33.57,57.6,0.0
+3,20.0,RL saja,20043,success,99,81.1,0,24.94,95.3,0.0
+3,20.0,RL saja,20044,success,80,80.3,0,15.64,94.5,0.0
+3,20.0,RL saja,20045,success,153,35.9,1,24.51,50.1,0.0
+3,20.0,RL saja,20046,timeout,350,6.2,1,,,
+3,20.0,RL saja,20047,success,128,84.4,0,18.87,64.2,0.0
+3,20.0,RL saja,20048,success,132,69.2,0,23.89,59.2,0.0
+3,20.0,RL saja,20049,collision,227,46.9,1,36.82,57.3,0.0
+3,20.0,RL saja,20050,collision,123,38.4,1,15.28,37.3,0.0
+3,20.0,RL saja,20051,success,142,48.4,1,15.17,70.8,0.0
+3,20.0,RL saja,20052,success,113,65.9,0,27.16,78.4,0.0
+3,20.0,RL saja,20053,success,127,114.1,0,37.82,133.0,0.0
+3,20.0,RL saja,20054,success,81,84.4,0,40.34,66.1,0.0
+3,20.0,RL saja,20055,success,149,54.8,1,29.33,78.4,0.0
+3,20.0,RL saja,20056,success,161,51.6,1,18.27,67.8,0.0
+3,20.0,RL saja,20057,success,82,26.1,1,21.0,36.6,0.0
+3,20.0,RL saja,20058,success,173,108.1,0,32.35,129.9,0.0
+3,20.0,RL saja,20059,self_collision,70,107.1,0,,,
+3,20.0,RL saja,20060,success,99,84.1,0,22.5,72.2,0.0
+3,20.0,RL saja,20061,success,80,37.1,1,21.57,28.3,0.0
+3,20.0,RL saja,20062,success,132,49.7,1,24.15,33.9,0.0
+3,20.0,RL saja,20063,success,87,58.6,1,16.05,79.1,0.0
+3,20.0,RL saja,20064,success,277,84.8,0,28.03,63.7,0.0
+3,20.0,RL saja,20065,timeout,350,97.9,0,31.84,96.8,0.0
+3,20.0,RL saja,20066,timeout,350,91.4,0,,,
+3,20.0,RL saja,20067,success,98,122.5,0,50.56,106.8,0.0
+3,20.0,RL saja,20068,collision,68,105.0,0,34.76,113.4,0.0
+3,20.0,RL saja,20069,success,89,107.2,0,35.23,87.5,0.0
+3,20.0,RL saja,20070,success,190,61.3,0,56.01,58.6,0.0
+3,20.0,RL saja,20071,timeout,350,122.0,0,28.91,144.5,0.0
+3,20.0,RL saja,20072,success,107,95.9,0,12.42,76.8,0.0
+3,20.0,RL saja,20073,success,139,11.4,1,18.61,30.5,0.0
+3,20.0,RL saja,20074,success,109,67.9,0,21.57,52.8,0.0
+3,20.0,RL saja,20075,success,155,38.4,1,20.82,58.1,0.0
+3,20.0,RL saja,20076,self_collision,46,135.0,0,,,
+3,20.0,RL saja,20077,success,111,57.3,1,28.18,48.0,0.0
+3,20.0,RL saja,20078,success,102,114.0,0,29.02,95.1,0.0
+3,20.0,RL saja,20079,success,98,67.8,0,21.63,63.8,0.0
+3,20.0,RL saja,20080,success,109,41.0,1,20.14,61.2,0.0
+3,20.0,RL saja,20081,success,97,134.2,0,17.93,123.9,0.0
+3,20.0,RL saja,20082,success,150,130.4,0,20.81,125.4,0.0
+3,20.0,RL saja,20083,success,79,126.6,0,23.62,122.3,0.0
+3,20.0,RL saja,20084,success,84,95.1,0,38.37,74.5,0.0
+3,20.0,RL saja,20085,success,135,18.1,1,21.43,34.7,0.0
+3,20.0,RL saja,20086,success,82,70.6,0,25.77,79.6,0.0
+3,20.0,RL saja,20087,timeout,350,32.4,1,,,
+3,20.0,RL saja,20088,success,94,105.8,0,54.76,83.1,0.0
+3,20.0,RL saja,20089,collision,61,34.9,1,,,
+3,20.0,RL saja,20090,success,75,17.3,1,14.18,13.1,0.2
+3,20.0,RL saja,20091,success,131,63.3,0,27.53,57.3,0.0
+3,20.0,RL saja,20092,success,135,132.9,0,12.72,111.8,0.0
+3,20.0,RL saja,20093,success,62,67.3,0,29.62,49.6,0.0
+3,20.0,RL saja,20094,success,283,49.7,1,21.17,54.4,0.0
+3,20.0,RL saja,20095,success,107,21.5,1,17.62,31.8,0.0
+3,20.0,RL saja,20096,success,88,16.5,1,26.27,38.4,0.0
+3,20.0,RL saja,20097,success,129,62.1,0,36.54,61.2,0.0
+3,20.0,RL saja,20098,success,88,91.8,0,28.7,84.5,0.0
+3,20.0,RL saja,20099,success,83,35.9,1,16.27,22.3,0.0
+3,20.0,RL + LQR (posisi),20000,success,112,47.0,1,2.85,68.0,0.0
+3,20.0,RL + LQR (posisi),20001,success,143,61.9,0,1.55,66.5,0.0
+3,20.0,RL + LQR (posisi),20002,success,78,27.0,1,2.64,48.7,0.0
+3,20.0,RL + LQR (posisi),20003,success,87,40.8,1,2.26,60.1,0.0
+3,20.0,RL + LQR (posisi),20004,success,87,41.3,1,1.09,29.2,0.0
+3,20.0,RL + LQR (posisi),20005,success,87,8.3,1,3.29,24.1,0.0
+3,20.0,RL + LQR (posisi),20006,success,125,88.2,0,0.77,76.7,0.0
+3,20.0,RL + LQR (posisi),20007,success,102,97.4,0,0.95,114.0,0.0
+3,20.0,RL + LQR (posisi),20008,success,68,24.2,1,1.18,28.7,0.0
+3,20.0,RL + LQR (posisi),20009,collision,86,80.2,0,1.61,96.1,0.0
+3,20.0,RL + LQR (posisi),20010,success,104,25.7,1,2.59,17.5,0.0
+3,20.0,RL + LQR (posisi),20011,success,130,40.8,1,1.05,26.2,0.0
+3,20.0,RL + LQR (posisi),20012,success,102,125.1,0,1.45,107.5,0.0
+3,20.0,RL + LQR (posisi),20013,collision,96,123.5,0,2.4,141.8,0.0
+3,20.0,RL + LQR (posisi),20014,success,234,30.4,1,1.88,37.1,0.0
+3,20.0,RL + LQR (posisi),20015,collision,98,63.3,0,1.45,51.7,0.0
+3,20.0,RL + LQR (posisi),20016,success,64,46.3,1,0.87,48.4,0.0
+3,20.0,RL + LQR (posisi),20017,success,81,95.2,0,0.69,82.9,0.0
+3,20.0,RL + LQR (posisi),20018,success,166,43.1,1,1.06,59.6,0.0
+3,20.0,RL + LQR (posisi),20019,success,92,88.0,0,0.86,79.6,0.0
+3,20.0,RL + LQR (posisi),20020,success,179,34.1,1,1.58,49.5,0.0
+3,20.0,RL + LQR (posisi),20021,success,108,29.7,1,1.09,42.8,0.0
+3,20.0,RL + LQR (posisi),20022,success,169,28.6,1,2.67,51.0,0.0
+3,20.0,RL + LQR (posisi),20023,success,90,27.0,1,2.02,48.9,0.0
+3,20.0,RL + LQR (posisi),20024,success,70,114.1,0,1.82,96.6,0.0
+3,20.0,RL + LQR (posisi),20025,success,100,117.3,0,1.27,99.6,0.0
+3,20.0,RL + LQR (posisi),20026,collision,130,39.7,1,1.23,31.9,0.0
+3,20.0,RL + LQR (posisi),20027,success,161,10.0,1,2.77,20.1,0.0
+3,20.0,RL + LQR (posisi),20028,success,85,19.5,1,3.1,32.7,0.0
+3,20.0,RL + LQR (posisi),20029,success,94,29.7,1,1.66,43.4,0.0
+3,20.0,RL + LQR (posisi),20030,collision,134,56.0,1,0.82,64.1,0.0
+3,20.0,RL + LQR (posisi),20031,success,73,13.7,1,2.09,34.7,0.0
+3,20.0,RL + LQR (posisi),20032,success,92,58.0,1,0.99,36.3,0.0
+3,20.0,RL + LQR (posisi),20033,success,117,88.3,0,0.51,80.8,0.0
+3,20.0,RL + LQR (posisi),20034,success,97,73.5,0,1.23,61.4,0.0
+3,20.0,RL + LQR (posisi),20035,success,92,103.4,0,1.53,120.5,0.0
+3,20.0,RL + LQR (posisi),20036,success,91,84.9,0,1.12,61.3,0.0
+3,20.0,RL + LQR (posisi),20037,success,56,76.8,0,0.97,58.6,0.0
+3,20.0,RL + LQR (posisi),20038,success,99,49.3,1,1.03,39.8,0.0
+3,20.0,RL + LQR (posisi),20039,success,124,75.9,0,0.9,87.7,0.0
+3,20.0,RL + LQR (posisi),20040,success,111,60.3,0,2.03,63.6,0.0
+3,20.0,RL + LQR (posisi),20041,success,109,45.8,1,0.92,45.9,0.0
+3,20.0,RL + LQR (posisi),20042,success,88,73.2,0,1.53,57.2,0.0
+3,20.0,RL + LQR (posisi),20043,success,91,81.1,0,1.77,93.3,0.0
+3,20.0,RL + LQR (posisi),20044,success,71,80.3,0,1.71,94.4,0.0
+3,20.0,RL + LQR (posisi),20045,success,160,35.9,1,1.06,49.8,0.0
+3,20.0,RL + LQR (posisi),20046,timeout,350,6.2,1,,,
+3,20.0,RL + LQR (posisi),20047,success,133,84.4,0,0.91,63.6,0.0
+3,20.0,RL + LQR (posisi),20048,success,129,69.2,0,1.16,57.2,0.0
+3,20.0,RL + LQR (posisi),20049,success,155,46.9,1,1.23,57.2,0.0
+3,20.0,RL + LQR (posisi),20050,collision,130,38.4,1,1.31,37.9,0.0
+3,20.0,RL + LQR (posisi),20051,success,151,48.4,1,0.89,70.8,0.0
+3,20.0,RL + LQR (posisi),20052,success,115,65.9,0,2.25,79.4,0.0
+3,20.0,RL + LQR (posisi),20053,success,121,114.1,0,0.54,133.2,0.0
+3,20.0,RL + LQR (posisi),20054,success,80,84.4,0,1.51,65.5,0.0
+3,20.0,RL + LQR (posisi),20055,success,151,54.8,1,0.8,78.6,0.0
+3,20.0,RL + LQR (posisi),20056,success,164,51.6,1,1.34,67.7,0.0
+3,20.0,RL + LQR (posisi),20057,success,86,26.1,1,1.75,36.1,0.0
+3,20.0,RL + LQR (posisi),20058,success,182,108.1,0,1.25,130.0,0.0
+3,20.0,RL + LQR (posisi),20059,self_collision,70,107.1,0,,,
+3,20.0,RL + LQR (posisi),20060,success,95,84.1,0,1.87,79.1,0.0
+3,20.0,RL + LQR (posisi),20061,success,76,37.1,1,1.25,36.4,0.0
+3,20.0,RL + LQR (posisi),20062,success,141,49.7,1,1.14,34.9,0.0
+3,20.0,RL + LQR (posisi),20063,collision,79,58.6,1,2.44,78.1,0.0
+3,20.0,RL + LQR (posisi),20064,success,60,84.8,0,2.16,64.7,0.0
+3,20.0,RL + LQR (posisi),20065,success,159,97.9,0,1.12,98.6,0.0
+3,20.0,RL + LQR (posisi),20066,success,67,91.4,0,0.76,84.5,0.0
+3,20.0,RL + LQR (posisi),20067,success,109,122.5,0,1.12,105.2,0.0
+3,20.0,RL + LQR (posisi),20068,success,76,105.0,0,1.4,109.2,0.0
+3,20.0,RL + LQR (posisi),20069,success,94,107.2,0,1.2,86.9,0.0
+3,20.0,RL + LQR (posisi),20070,success,171,61.3,0,2.61,56.9,0.0
+3,20.0,RL + LQR (posisi),20071,success,134,122.0,0,1.37,144.5,0.0
+3,20.0,RL + LQR (posisi),20072,success,102,95.9,0,0.54,76.9,0.0
+3,20.0,RL + LQR (posisi),20073,success,101,11.4,1,1.41,30.2,0.0
+3,20.0,RL + LQR (posisi),20074,success,119,67.9,0,1.44,50.8,0.0
+3,20.0,RL + LQR (posisi),20075,success,163,38.4,1,0.97,58.0,0.0
+3,20.0,RL + LQR (posisi),20076,self_collision,46,135.0,0,,,
+3,20.0,RL + LQR (posisi),20077,success,120,57.3,1,1.27,44.2,0.0
+3,20.0,RL + LQR (posisi),20078,success,106,114.0,0,1.39,94.8,0.0
+3,20.0,RL + LQR (posisi),20079,success,106,67.8,0,0.77,64.8,0.0
+3,20.0,RL + LQR (posisi),20080,success,116,41.0,1,1.0,62.0,0.0
+3,20.0,RL + LQR (posisi),20081,success,110,134.2,0,2.24,131.6,0.0
+3,20.0,RL + LQR (posisi),20082,collision,161,130.4,0,0.91,121.9,0.0
+3,20.0,RL + LQR (posisi),20083,success,92,126.6,0,1.69,119.1,0.0
+3,20.0,RL + LQR (posisi),20084,success,91,95.1,0,0.93,73.8,0.0
+3,20.0,RL + LQR (posisi),20085,success,130,18.1,1,1.23,34.6,0.0
+3,20.0,RL + LQR (posisi),20086,success,90,70.6,0,0.63,82.2,0.0
+3,20.0,RL + LQR (posisi),20087,timeout,350,32.4,1,,,
+3,20.0,RL + LQR (posisi),20088,success,100,105.8,0,1.62,83.9,0.0
+3,20.0,RL + LQR (posisi),20089,collision,61,34.9,1,,,
+3,20.0,RL + LQR (posisi),20090,success,75,17.3,1,2.94,13.6,0.143
+3,20.0,RL + LQR (posisi),20091,success,133,63.3,0,1.18,56.8,0.0
+3,20.0,RL + LQR (posisi),20092,success,136,132.9,0,1.15,112.2,0.0
+3,20.0,RL + LQR (posisi),20093,success,64,67.3,0,1.64,46.5,0.0
+3,20.0,RL + LQR (posisi),20094,success,178,49.7,1,0.91,54.5,0.0
+3,20.0,RL + LQR (posisi),20095,success,105,21.5,1,1.35,32.2,0.0
+3,20.0,RL + LQR (posisi),20096,success,86,16.5,1,2.35,39.2,0.0
+3,20.0,RL + LQR (posisi),20097,success,143,62.1,0,0.99,60.5,0.0
+3,20.0,RL + LQR (posisi),20098,success,78,91.8,0,0.67,83.5,0.0
+3,20.0,RL + LQR (posisi),20099,success,87,35.9,1,2.0,21.4,0.0
+3,20.0,RL + LQR + orientasi,20000,success,128,47.0,1,2.43,1.3,1.0
+3,20.0,RL + LQR + orientasi,20001,success,143,61.9,0,1.55,66.5,0.0
+3,20.0,RL + LQR + orientasi,20002,success,74,27.0,1,2.58,9.5,1.0
+3,20.0,RL + LQR + orientasi,20003,success,97,40.8,1,2.92,8.5,1.0
+3,20.0,RL + LQR + orientasi,20004,success,167,41.3,1,0.46,10.8,0.0
+3,20.0,RL + LQR + orientasi,20005,success,91,8.3,1,3.02,4.6,1.0
+3,20.0,RL + LQR + orientasi,20006,success,125,88.2,0,0.77,76.7,0.0
+3,20.0,RL + LQR + orientasi,20007,success,102,97.4,0,0.95,114.0,0.0
+3,20.0,RL + LQR + orientasi,20008,success,64,24.2,1,0.64,0.6,1.0
+3,20.0,RL + LQR + orientasi,20009,collision,86,80.2,0,1.61,96.1,0.0
+3,20.0,RL + LQR + orientasi,20010,success,105,25.7,1,1.97,0.9,1.0
+3,20.0,RL + LQR + orientasi,20011,success,134,40.8,1,1.09,0.6,1.0
+3,20.0,RL + LQR + orientasi,20012,success,102,125.1,0,1.45,107.5,0.0
+3,20.0,RL + LQR + orientasi,20013,collision,96,123.5,0,2.4,141.8,0.0
+3,20.0,RL + LQR + orientasi,20014,timeout,350,30.4,1,,,
+3,20.0,RL + LQR + orientasi,20015,collision,98,63.3,0,1.45,51.7,0.0
+3,20.0,RL + LQR + orientasi,20016,success,70,46.3,1,1.08,3.2,0.873
+3,20.0,RL + LQR + orientasi,20017,success,81,95.2,0,0.69,82.9,0.0
+3,20.0,RL + LQR + orientasi,20018,success,166,43.1,1,0.94,8.4,1.0
+3,20.0,RL + LQR + orientasi,20019,success,92,88.0,0,0.86,79.6,0.0
+3,20.0,RL + LQR + orientasi,20020,success,259,34.1,1,1.11,15.7,0.0
+3,20.0,RL + LQR + orientasi,20021,success,188,29.7,1,0.93,11.1,0.0
+3,20.0,RL + LQR + orientasi,20022,success,160,28.6,1,2.24,1.4,1.0
+3,20.0,RL + LQR + orientasi,20023,success,92,27.0,1,3.13,8.0,1.0
+3,20.0,RL + LQR + orientasi,20024,success,70,114.1,0,1.82,96.6,0.0
+3,20.0,RL + LQR + orientasi,20025,success,100,117.3,0,1.27,99.6,0.0
+3,20.0,RL + LQR + orientasi,20026,success,137,39.7,1,1.48,0.9,1.0
+3,20.0,RL + LQR + orientasi,20027,timeout,350,10.0,1,,,
+3,20.0,RL + LQR + orientasi,20028,success,82,19.5,1,1.42,5.1,1.0
+3,20.0,RL + LQR + orientasi,20029,success,95,29.7,1,3.05,9.7,1.0
+3,20.0,RL + LQR + orientasi,20030,success,135,56.0,1,0.85,5.9,1.0
+3,20.0,RL + LQR + orientasi,20031,success,69,13.7,1,2.96,5.4,1.0
+3,20.0,RL + LQR + orientasi,20032,success,92,58.0,1,1.19,3.1,1.0
+3,20.0,RL + LQR + orientasi,20033,success,117,88.3,0,0.51,80.8,0.0
+3,20.0,RL + LQR + orientasi,20034,success,97,73.5,0,1.23,61.4,0.0
+3,20.0,RL + LQR + orientasi,20035,success,92,103.4,0,1.53,120.5,0.0
+3,20.0,RL + LQR + orientasi,20036,success,91,84.9,0,1.12,61.3,0.0
+3,20.0,RL + LQR + orientasi,20037,success,56,76.8,0,0.97,58.6,0.0
+3,20.0,RL + LQR + orientasi,20038,success,101,49.3,1,1.05,3.4,1.0
+3,20.0,RL + LQR + orientasi,20039,success,124,75.9,0,0.9,87.7,0.0
+3,20.0,RL + LQR + orientasi,20040,success,111,60.3,0,2.03,63.6,0.0
+3,20.0,RL + LQR + orientasi,20041,success,190,45.8,1,0.41,11.2,0.0
+3,20.0,RL + LQR + orientasi,20042,success,88,73.2,0,1.53,57.2,0.0
+3,20.0,RL + LQR + orientasi,20043,success,91,81.1,0,1.77,93.3,0.0
+3,20.0,RL + LQR + orientasi,20044,success,71,80.3,0,1.71,94.4,0.0
+3,20.0,RL + LQR + orientasi,20045,success,162,35.9,1,3.2,9.8,1.0
+3,20.0,RL + LQR + orientasi,20046,success,167,6.2,1,2.28,0.8,1.0
+3,20.0,RL + LQR + orientasi,20047,success,133,84.4,0,0.91,63.6,0.0
+3,20.0,RL + LQR + orientasi,20048,success,129,69.2,0,1.16,57.2,0.0
+3,20.0,RL + LQR + orientasi,20049,success,234,46.9,1,1.71,11.9,0.0
+3,20.0,RL + LQR + orientasi,20050,success,212,38.4,1,0.67,10.3,0.0
+3,20.0,RL + LQR + orientasi,20051,collision,150,48.4,1,0.8,6.4,1.0
+3,20.0,RL + LQR + orientasi,20052,success,115,65.9,0,2.25,79.4,0.0
+3,20.0,RL + LQR + orientasi,20053,success,121,114.1,0,0.54,133.2,0.0
+3,20.0,RL + LQR + orientasi,20054,success,80,84.4,0,1.51,65.5,0.0
+3,20.0,RL + LQR + orientasi,20055,success,153,54.8,1,2.13,6.8,1.0
+3,20.0,RL + LQR + orientasi,20056,success,243,51.6,1,0.48,10.8,0.0
+3,20.0,RL + LQR + orientasi,20057,success,83,26.1,1,1.09,4.0,1.0
+3,20.0,RL + LQR + orientasi,20058,success,182,108.1,0,1.25,130.0,0.0
+3,20.0,RL + LQR + orientasi,20059,self_collision,70,107.1,0,,,
+3,20.0,RL + LQR + orientasi,20060,success,95,84.1,0,1.87,79.1,0.0
+3,20.0,RL + LQR + orientasi,20061,success,71,37.1,1,0.92,0.7,1.0
+3,20.0,RL + LQR + orientasi,20062,success,138,49.7,1,1.14,0.7,1.0
+3,20.0,RL + LQR + orientasi,20063,success,96,58.6,1,2.5,0.7,1.0
+3,20.0,RL + LQR + orientasi,20064,success,60,84.8,0,2.16,64.7,0.0
+3,20.0,RL + LQR + orientasi,20065,success,159,97.9,0,1.12,98.6,0.0
+3,20.0,RL + LQR + orientasi,20066,success,67,91.4,0,0.76,84.5,0.0
+3,20.0,RL + LQR + orientasi,20067,success,109,122.5,0,1.12,105.2,0.0
+3,20.0,RL + LQR + orientasi,20068,success,76,105.0,0,1.4,109.2,0.0
+3,20.0,RL + LQR + orientasi,20069,success,94,107.2,0,1.2,86.9,0.0
+3,20.0,RL + LQR + orientasi,20070,success,171,61.3,0,2.61,56.9,0.0
+3,20.0,RL + LQR + orientasi,20071,success,134,122.0,0,1.37,144.5,0.0
+3,20.0,RL + LQR + orientasi,20072,success,102,95.9,0,0.54,76.9,0.0
+3,20.0,RL + LQR + orientasi,20073,success,180,11.4,1,0.46,11.2,0.0
+3,20.0,RL + LQR + orientasi,20074,success,119,67.9,0,1.44,50.8,0.0
+3,20.0,RL + LQR + orientasi,20075,success,160,38.4,1,2.32,7.9,1.0
+3,20.0,RL + LQR + orientasi,20076,self_collision,46,135.0,0,,,
+3,20.0,RL + LQR + orientasi,20077,success,116,57.3,1,1.13,0.7,1.0
+3,20.0,RL + LQR + orientasi,20078,success,106,114.0,0,1.39,94.8,0.0
+3,20.0,RL + LQR + orientasi,20079,success,106,67.8,0,0.77,64.8,0.0
+3,20.0,RL + LQR + orientasi,20080,success,122,41.0,1,2.67,8.7,1.0
+3,20.0,RL + LQR + orientasi,20081,success,110,134.2,0,2.24,131.6,0.0
+3,20.0,RL + LQR + orientasi,20082,collision,161,130.4,0,0.91,121.9,0.0
+3,20.0,RL + LQR + orientasi,20083,success,92,126.6,0,1.69,119.1,0.0
+3,20.0,RL + LQR + orientasi,20084,success,91,95.1,0,0.93,73.8,0.0
+3,20.0,RL + LQR + orientasi,20085,success,131,18.1,1,2.38,8.8,1.0
+3,20.0,RL + LQR + orientasi,20086,success,90,70.6,0,0.63,82.2,0.0
+3,20.0,RL + LQR + orientasi,20087,timeout,350,32.4,1,,,
+3,20.0,RL + LQR + orientasi,20088,success,100,105.8,0,1.62,83.9,0.0
+3,20.0,RL + LQR + orientasi,20089,collision,61,34.9,1,,,
+3,20.0,RL + LQR + orientasi,20090,success,154,17.3,1,0.63,14.4,0.0
+3,20.0,RL + LQR + orientasi,20091,success,133,63.3,0,1.18,56.8,0.0
+3,20.0,RL + LQR + orientasi,20092,success,136,132.9,0,1.15,112.2,0.0
+3,20.0,RL + LQR + orientasi,20093,success,64,67.3,0,1.64,46.5,0.0
+3,20.0,RL + LQR + orientasi,20094,success,260,49.7,1,0.41,12.3,0.0
+3,20.0,RL + LQR + orientasi,20095,success,184,21.5,1,0.5,11.3,0.0
+3,20.0,RL + LQR + orientasi,20096,success,89,16.5,1,2.97,2.6,1.0
+3,20.0,RL + LQR + orientasi,20097,success,143,62.1,0,0.99,60.5,0.0
+3,20.0,RL + LQR + orientasi,20098,success,78,91.8,0,0.67,83.5,0.0
+3,20.0,RL + LQR + orientasi,20099,success,100,35.9,1,1.52,9.9,0.7
+3,5.0,RL saja,20000,timeout,350,47.0,1,,,
+3,5.0,RL saja,20001,timeout,350,61.9,0,,,
+3,5.0,RL saja,20002,timeout,350,27.0,1,,,
+3,5.0,RL saja,20003,timeout,350,40.8,1,,,
+3,5.0,RL saja,20004,success,169,41.3,1,13.97,23.9,0.0
+3,5.0,RL saja,20005,timeout,350,8.3,1,13.29,24.8,0.0
+3,5.0,RL saja,20006,collision,341,88.2,0,19.42,76.6,0.0
+3,5.0,RL saja,20007,timeout,350,97.4,0,,,
+3,5.0,RL saja,20008,timeout,350,24.2,1,,,
+3,5.0,RL saja,20009,timeout,350,80.2,0,,,
+3,5.0,RL saja,20010,timeout,350,25.7,1,16.6,37.5,0.0
+3,5.0,RL saja,20011,timeout,350,40.8,1,,,
+3,5.0,RL saja,20012,timeout,350,125.1,0,,,
+3,5.0,RL saja,20013,timeout,350,123.5,0,,,
+3,5.0,RL saja,20014,timeout,350,30.4,1,,,
+3,5.0,RL saja,20015,timeout,350,63.3,0,,,
+3,5.0,RL saja,20016,timeout,350,46.3,1,15.52,27.9,0.0
+3,5.0,RL saja,20017,timeout,350,95.2,0,,,
+3,5.0,RL saja,20018,timeout,350,43.1,1,21.94,59.0,0.0
+3,5.0,RL saja,20019,timeout,350,88.0,0,,,
+3,5.0,RL saja,20020,timeout,350,34.1,1,,,
+3,5.0,RL saja,20021,timeout,350,29.7,1,,,
+3,5.0,RL saja,20022,timeout,350,28.6,1,,,
+3,5.0,RL saja,20023,timeout,350,27.0,1,14.63,49.9,0.0
+3,5.0,RL saja,20024,timeout,350,114.1,0,,,
+3,5.0,RL saja,20025,timeout,350,117.3,0,,,
+3,5.0,RL saja,20026,collision,129,39.7,1,29.01,31.5,0.0
+3,5.0,RL saja,20027,timeout,350,10.0,1,,,
+3,5.0,RL saja,20028,timeout,350,19.5,1,,,
+3,5.0,RL saja,20029,timeout,350,29.7,1,,,
+3,5.0,RL saja,20030,timeout,350,56.0,1,,,
+3,5.0,RL saja,20031,timeout,350,13.7,1,,,
+3,5.0,RL saja,20032,timeout,350,58.0,1,,,
+3,5.0,RL saja,20033,timeout,350,88.3,0,,,
+3,5.0,RL saja,20034,timeout,350,73.5,0,19.04,60.2,0.0
+3,5.0,RL saja,20035,timeout,350,103.4,0,,,
+3,5.0,RL saja,20036,timeout,350,84.9,0,,,
+3,5.0,RL saja,20037,success,297,76.8,0,87.04,77.0,0.0
+3,5.0,RL saja,20038,timeout,350,49.3,1,,,
+3,5.0,RL saja,20039,timeout,350,75.9,0,,,
+3,5.0,RL saja,20040,timeout,350,60.3,0,,,
+3,5.0,RL saja,20041,timeout,350,45.8,1,,,
+3,5.0,RL saja,20042,timeout,350,73.2,0,,,
+3,5.0,RL saja,20043,timeout,350,81.1,0,,,
+3,5.0,RL saja,20044,timeout,350,80.3,0,,,
+3,5.0,RL saja,20045,timeout,350,35.9,1,,,
+3,5.0,RL saja,20046,timeout,350,6.2,1,,,
+3,5.0,RL saja,20047,timeout,350,84.4,0,,,
+3,5.0,RL saja,20048,timeout,350,69.2,0,,,
+3,5.0,RL saja,20049,timeout,350,46.9,1,,,
+3,5.0,RL saja,20050,timeout,350,38.4,1,,,
+3,5.0,RL saja,20051,timeout,350,48.4,1,23.03,70.8,0.0
+3,5.0,RL saja,20052,timeout,350,65.9,0,,,
+3,5.0,RL saja,20053,timeout,350,114.1,0,,,
+3,5.0,RL saja,20054,timeout,350,84.4,0,,,
+3,5.0,RL saja,20055,timeout,350,54.8,1,22.59,79.1,0.0
+3,5.0,RL saja,20056,timeout,350,51.6,1,,,
+3,5.0,RL saja,20057,timeout,350,26.1,1,,,
+3,5.0,RL saja,20058,timeout,350,108.1,0,,,
+3,5.0,RL saja,20059,self_collision,70,107.1,0,,,
+3,5.0,RL saja,20060,timeout,350,84.1,0,20.04,69.8,0.0
+3,5.0,RL saja,20061,success,168,37.1,1,11.07,17.9,0.0
+3,5.0,RL saja,20062,timeout,350,49.7,1,,,
+3,5.0,RL saja,20063,timeout,350,58.6,1,,,
+3,5.0,RL saja,20064,timeout,350,84.8,0,26.38,63.2,0.0
+3,5.0,RL saja,20065,timeout,350,97.9,0,32.06,96.7,0.0
+3,5.0,RL saja,20066,timeout,350,91.4,0,,,
+3,5.0,RL saja,20067,timeout,350,122.5,0,,,
+3,5.0,RL saja,20068,timeout,350,105.0,0,,,
+3,5.0,RL saja,20069,timeout,350,107.2,0,18.34,85.8,0.0
+3,5.0,RL saja,20070,collision,254,61.3,0,,,
+3,5.0,RL saja,20071,timeout,350,122.0,0,,,
+3,5.0,RL saja,20072,timeout,350,95.9,0,13.59,76.7,0.0
+3,5.0,RL saja,20073,timeout,350,11.4,1,47.77,30.5,0.0
+3,5.0,RL saja,20074,timeout,350,67.9,0,10.94,67.7,0.0
+3,5.0,RL saja,20075,timeout,350,38.4,1,17.04,59.7,0.0
+3,5.0,RL saja,20076,self_collision,46,135.0,0,,,
+3,5.0,RL saja,20077,timeout,350,57.3,1,,,
+3,5.0,RL saja,20078,timeout,350,114.0,0,,,
+3,5.0,RL saja,20079,timeout,350,67.8,0,,,
+3,5.0,RL saja,20080,timeout,350,41.0,1,,,
+3,5.0,RL saja,20081,timeout,350,134.2,0,,,
+3,5.0,RL saja,20082,collision,190,130.4,0,17.55,126.1,0.0
+3,5.0,RL saja,20083,timeout,350,126.6,0,,,
+3,5.0,RL saja,20084,timeout,350,95.1,0,,,
+3,5.0,RL saja,20085,timeout,350,18.1,1,,,
+3,5.0,RL saja,20086,timeout,350,70.6,0,13.2,72.8,0.0
+3,5.0,RL saja,20087,timeout,350,32.4,1,,,
+3,5.0,RL saja,20088,timeout,350,105.8,0,26.18,82.0,0.0
+3,5.0,RL saja,20089,collision,61,34.9,1,,,
+3,5.0,RL saja,20090,success,225,17.3,1,9.58,19.9,0.0
+3,5.0,RL saja,20091,timeout,350,63.3,0,9.77,78.5,0.0
+3,5.0,RL saja,20092,timeout,350,132.9,0,,,
+3,5.0,RL saja,20093,timeout,350,67.3,0,,,
+3,5.0,RL saja,20094,timeout,350,49.7,1,18.93,54.3,0.0
+3,5.0,RL saja,20095,timeout,350,21.5,1,11.06,32.5,0.0
+3,5.0,RL saja,20096,timeout,350,16.5,1,,,
+3,5.0,RL saja,20097,timeout,350,62.1,0,,,
+3,5.0,RL saja,20098,timeout,350,91.8,0,,,
+3,5.0,RL saja,20099,timeout,350,35.9,1,,,
+3,5.0,RL + LQR (posisi),20000,success,124,47.0,1,2.17,66.5,0.0
+3,5.0,RL + LQR (posisi),20001,success,154,61.9,0,1.03,66.9,0.0
+3,5.0,RL + LQR (posisi),20002,success,90,27.0,1,2.14,48.7,0.0
+3,5.0,RL + LQR (posisi),20003,collision,99,40.8,1,2.03,59.5,0.0
+3,5.0,RL + LQR (posisi),20004,success,98,41.3,1,0.46,29.3,0.0
+3,5.0,RL + LQR (posisi),20005,success,98,8.3,1,2.53,24.0,0.0
+3,5.0,RL + LQR (posisi),20006,success,135,88.2,0,0.46,76.7,0.0
+3,5.0,RL + LQR (posisi),20007,success,113,97.4,0,0.59,115.6,0.0
+3,5.0,RL + LQR (posisi),20008,success,80,24.2,1,0.34,23.9,0.026
+3,5.0,RL + LQR (posisi),20009,collision,94,80.2,0,0.9,96.0,0.0
+3,5.0,RL + LQR (posisi),20010,success,116,25.7,1,1.94,17.9,0.0
+3,5.0,RL + LQR (posisi),20011,success,141,40.8,1,0.43,26.2,0.0
+3,5.0,RL + LQR (posisi),20012,success,114,125.1,0,1.16,106.6,0.0
+3,5.0,RL + LQR (posisi),20013,collision,103,123.5,0,1.93,141.9,0.0
+3,5.0,RL + LQR (posisi),20014,success,245,30.4,1,1.25,37.0,0.0
+3,5.0,RL + LQR (posisi),20015,collision,106,63.3,0,0.57,51.1,0.0
+3,5.0,RL + LQR (posisi),20016,success,75,46.3,1,0.42,47.5,0.0
+3,5.0,RL + LQR (posisi),20017,success,93,95.2,0,0.54,86.8,0.0
+3,5.0,RL + LQR (posisi),20018,success,176,43.1,1,0.5,59.7,0.0
+3,5.0,RL + LQR (posisi),20019,collision,103,88.0,0,1.63,81.8,0.0
+3,5.0,RL + LQR (posisi),20020,success,190,34.1,1,1.16,50.0,0.0
+3,5.0,RL + LQR (posisi),20021,success,118,29.7,1,0.45,42.8,0.0
+3,5.0,RL + LQR (posisi),20022,success,178,28.6,1,2.14,51.0,0.0
+3,5.0,RL + LQR (posisi),20023,success,100,27.0,1,1.35,49.3,0.0
+3,5.0,RL + LQR (posisi),20024,success,82,114.1,0,1.17,96.7,0.0
+3,5.0,RL + LQR (posisi),20025,success,110,117.3,0,0.52,97.4,0.0
+3,5.0,RL + LQR (posisi),20026,collision,138,39.7,1,0.48,31.8,0.0
+3,5.0,RL + LQR (posisi),20027,success,173,10.0,1,2.18,20.6,0.0
+3,5.0,RL + LQR (posisi),20028,success,96,19.5,1,2.38,33.9,0.0
+3,5.0,RL + LQR (posisi),20029,success,105,29.7,1,0.75,43.4,0.0
+3,5.0,RL + LQR (posisi),20030,collision,143,56.0,1,0.49,65.1,0.0
+3,5.0,RL + LQR (posisi),20031,success,87,13.7,1,2.16,33.8,0.0
+3,5.0,RL + LQR (posisi),20032,success,102,58.0,1,0.58,35.8,0.0
+3,5.0,RL + LQR (posisi),20033,success,130,88.3,0,0.36,80.6,0.0
+3,5.0,RL + LQR (posisi),20034,success,108,73.5,0,0.59,61.1,0.0
+3,5.0,RL + LQR (posisi),20035,success,102,103.4,0,0.93,120.6,0.0
+3,5.0,RL + LQR (posisi),20036,success,101,84.9,0,0.76,60.9,0.0
+3,5.0,RL + LQR (posisi),20037,success,69,76.8,0,0.54,58.2,0.0
+3,5.0,RL + LQR (posisi),20038,success,110,49.3,1,0.46,40.2,0.0
+3,5.0,RL + LQR (posisi),20039,success,137,75.9,0,0.5,88.3,0.0
+3,5.0,RL + LQR (posisi),20040,success,121,60.3,0,1.43,64.8,0.0
+3,5.0,RL + LQR (posisi),20041,success,119,45.8,1,0.48,45.9,0.0
+3,5.0,RL + LQR (posisi),20042,success,99,73.2,0,0.71,57.6,0.0
+3,5.0,RL + LQR (posisi),20043,collision,101,81.1,0,0.87,93.4,0.0
+3,5.0,RL + LQR (posisi),20044,success,82,80.3,0,0.79,94.2,0.0
+3,5.0,RL + LQR (posisi),20045,success,171,35.9,1,0.48,50.2,0.0
+3,5.0,RL + LQR (posisi),20046,timeout,350,6.2,1,,,
+3,5.0,RL + LQR (posisi),20047,success,145,84.4,0,0.78,63.9,0.0
+3,5.0,RL + LQR (posisi),20048,success,141,69.2,0,0.5,57.3,0.0
+3,5.0,RL + LQR (posisi),20049,collision,164,46.9,1,0.57,57.2,0.0
+3,5.0,RL + LQR (posisi),20050,collision,137,38.4,1,0.57,38.2,0.0
+3,5.0,RL + LQR (posisi),20051,success,163,48.4,1,0.42,70.7,0.0
+3,5.0,RL + LQR (posisi),20052,success,127,65.9,0,2.12,82.8,0.0
+3,5.0,RL + LQR (posisi),20053,success,133,114.1,0,0.38,133.3,0.0
+3,5.0,RL + LQR (posisi),20054,success,90,84.4,0,0.62,65.7,0.0
+3,5.0,RL + LQR (posisi),20055,success,163,54.8,1,0.33,78.7,0.0
+3,5.0,RL + LQR (posisi),20056,success,175,51.6,1,0.67,67.8,0.0
+3,5.0,RL + LQR (posisi),20057,success,97,26.1,1,0.49,36.6,0.0
+3,5.0,RL + LQR (posisi),20058,success,194,108.1,0,0.6,130.1,0.0
+3,5.0,RL + LQR (posisi),20059,self_collision,70,107.1,0,,,
+3,5.0,RL + LQR (posisi),20060,success,104,84.1,0,1.43,74.9,0.0
+3,5.0,RL + LQR (posisi),20061,success,87,37.1,1,0.38,32.1,0.0
+3,5.0,RL + LQR (posisi),20062,success,153,49.7,1,0.61,35.0,0.0
+3,5.0,RL + LQR (posisi),20063,collision,88,58.6,1,1.28,75.8,0.0
+3,5.0,RL + LQR (posisi),20064,success,73,84.8,0,1.04,63.7,0.0
+3,5.0,RL + LQR (posisi),20065,success,171,97.9,0,0.6,99.2,0.0
+3,5.0,RL + LQR (posisi),20066,success,81,91.4,0,1.37,86.8,0.0
+3,5.0,RL + LQR (posisi),20067,success,119,122.5,0,0.63,104.3,0.0
+3,5.0,RL + LQR (posisi),20068,collision,86,105.0,0,0.81,109.2,0.0
+3,5.0,RL + LQR (posisi),20069,success,104,107.2,0,0.68,86.1,0.0
+3,5.0,RL + LQR (posisi),20070,success,205,61.3,0,5.98,54.2,0.0
+3,5.0,RL + LQR (posisi),20071,success,144,122.0,0,0.72,144.5,0.0
+3,5.0,RL + LQR (posisi),20072,success,114,95.9,0,0.31,76.8,0.0
+3,5.0,RL + LQR (posisi),20073,success,112,11.4,1,0.6,30.4,0.0
+3,5.0,RL + LQR (posisi),20074,success,130,67.9,0,0.83,50.9,0.0
+3,5.0,RL + LQR (posisi),20075,success,174,38.4,1,0.41,58.2,0.0
+3,5.0,RL + LQR (posisi),20076,self_collision,46,135.0,0,,,
+3,5.0,RL + LQR (posisi),20077,success,132,57.3,1,0.89,45.0,0.0
+3,5.0,RL + LQR (posisi),20078,success,118,114.0,0,0.82,94.6,0.0
+3,5.0,RL + LQR (posisi),20079,success,117,67.8,0,0.65,66.0,0.0
+3,5.0,RL + LQR (posisi),20080,success,127,41.0,1,0.53,62.1,0.0
+3,5.0,RL + LQR (posisi),20081,success,120,134.2,0,1.67,131.4,0.0
+3,5.0,RL + LQR (posisi),20082,collision,168,130.4,0,0.59,123.8,0.0
+3,5.0,RL + LQR (posisi),20083,success,104,126.6,0,1.92,117.6,0.0
+3,5.0,RL + LQR (posisi),20084,success,100,95.1,0,0.68,72.3,0.0
+3,5.0,RL + LQR (posisi),20085,success,141,18.1,1,0.4,34.8,0.0
+3,5.0,RL + LQR (posisi),20086,success,103,70.6,0,0.9,81.9,0.0
+3,5.0,RL + LQR (posisi),20087,timeout,350,32.4,1,,,
+3,5.0,RL + LQR (posisi),20088,success,109,105.8,0,1.01,83.3,0.0
+3,5.0,RL + LQR (posisi),20089,collision,61,34.9,1,,,
+3,5.0,RL + LQR (posisi),20090,success,89,17.3,1,2.06,15.1,0.0
+3,5.0,RL + LQR (posisi),20091,success,145,63.3,0,0.6,56.4,0.0
+3,5.0,RL + LQR (posisi),20092,self_collision,92,132.9,0,,,
+3,5.0,RL + LQR (posisi),20093,success,80,67.3,0,0.92,44.7,0.0
+3,5.0,RL + LQR (posisi),20094,success,190,49.7,1,0.49,54.6,0.0
+3,5.0,RL + LQR (posisi),20095,success,116,21.5,1,0.71,32.3,0.0
+3,5.0,RL + LQR (posisi),20096,success,96,16.5,1,1.52,39.6,0.0
+3,5.0,RL + LQR (posisi),20097,success,153,62.1,0,0.6,60.7,0.0
+3,5.0,RL + LQR (posisi),20098,success,90,91.8,0,0.63,84.9,0.0
+3,5.0,RL + LQR (posisi),20099,success,97,35.9,1,1.55,23.1,0.0
+3,5.0,RL + LQR + orientasi,20000,success,138,47.0,1,1.81,1.3,1.0
+3,5.0,RL + LQR + orientasi,20001,success,154,61.9,0,1.03,66.9,0.0
+3,5.0,RL + LQR + orientasi,20002,success,85,27.0,1,2.14,9.5,1.0
+3,5.0,RL + LQR + orientasi,20003,success,108,40.8,1,2.47,8.4,1.0
+3,5.0,RL + LQR + orientasi,20004,success,178,41.3,1,0.22,10.7,0.0
+3,5.0,RL + LQR + orientasi,20005,success,101,8.3,1,2.34,4.5,1.0
+3,5.0,RL + LQR + orientasi,20006,success,135,88.2,0,0.46,76.7,0.0
+3,5.0,RL + LQR + orientasi,20007,success,113,97.4,0,0.59,115.6,0.0
+3,5.0,RL + LQR + orientasi,20008,success,76,24.2,1,0.33,0.5,1.0
+3,5.0,RL + LQR + orientasi,20009,collision,94,80.2,0,0.9,96.0,0.0
+3,5.0,RL + LQR + orientasi,20010,success,115,25.7,1,1.3,0.9,1.0
+3,5.0,RL + LQR + orientasi,20011,success,145,40.8,1,0.4,0.5,1.0
+3,5.0,RL + LQR + orientasi,20012,success,114,125.1,0,1.16,106.6,0.0
+3,5.0,RL + LQR + orientasi,20013,collision,103,123.5,0,1.93,141.9,0.0
+3,5.0,RL + LQR + orientasi,20014,timeout,350,30.4,1,,,
+3,5.0,RL + LQR + orientasi,20015,collision,106,63.3,0,0.57,51.1,0.0
+3,5.0,RL + LQR + orientasi,20016,success,76,46.3,1,0.57,1.0,1.0
+3,5.0,RL + LQR + orientasi,20017,success,93,95.2,0,0.54,86.8,0.0
+3,5.0,RL + LQR + orientasi,20018,success,176,43.1,1,0.46,8.3,1.0
+3,5.0,RL + LQR + orientasi,20019,collision,103,88.0,0,1.63,81.8,0.0
+3,5.0,RL + LQR + orientasi,20020,success,271,34.1,1,0.91,15.5,0.0
+3,5.0,RL + LQR + orientasi,20021,success,200,29.7,1,0.75,11.1,0.0
+3,5.0,RL + LQR + orientasi,20022,success,171,28.6,1,1.58,1.3,1.0
+3,5.0,RL + LQR + orientasi,20023,success,103,27.0,1,2.61,8.0,1.0
+3,5.0,RL + LQR + orientasi,20024,success,82,114.1,0,1.17,96.7,0.0
+3,5.0,RL + LQR + orientasi,20025,success,110,117.3,0,0.52,97.4,0.0
+3,5.0,RL + LQR + orientasi,20026,success,148,39.7,1,0.57,0.7,1.0
+3,5.0,RL + LQR + orientasi,20027,timeout,350,10.0,1,,,
+3,5.0,RL + LQR + orientasi,20028,success,92,19.5,1,0.66,5.1,1.0
+3,5.0,RL + LQR + orientasi,20029,success,106,29.7,1,2.16,9.7,1.0
+3,5.0,RL + LQR + orientasi,20030,success,147,56.0,1,0.36,5.9,1.0
+3,5.0,RL + LQR + orientasi,20031,success,80,13.7,1,2.61,5.3,1.0
+3,5.0,RL + LQR + orientasi,20032,success,102,58.0,1,0.67,2.9,1.0
+3,5.0,RL + LQR + orientasi,20033,success,130,88.3,0,0.36,80.6,0.0
+3,5.0,RL + LQR + orientasi,20034,success,108,73.5,0,0.59,61.1,0.0
+3,5.0,RL + LQR + orientasi,20035,success,102,103.4,0,0.93,120.6,0.0
+3,5.0,RL + LQR + orientasi,20036,success,101,84.9,0,0.76,60.9,0.0
+3,5.0,RL + LQR + orientasi,20037,success,69,76.8,0,0.54,58.2,0.0
+3,5.0,RL + LQR + orientasi,20038,success,112,49.3,1,0.42,3.4,1.0
+3,5.0,RL + LQR + orientasi,20039,success,137,75.9,0,0.5,88.3,0.0
+3,5.0,RL + LQR + orientasi,20040,success,121,60.3,0,1.43,64.8,0.0
+3,5.0,RL + LQR + orientasi,20041,success,201,45.8,1,0.21,11.2,0.0
+3,5.0,RL + LQR + orientasi,20042,success,99,73.2,0,0.71,57.6,0.0
+3,5.0,RL + LQR + orientasi,20043,collision,101,81.1,0,0.87,93.4,0.0
+3,5.0,RL + LQR + orientasi,20044,success,82,80.3,0,0.79,94.2,0.0
+3,5.0,RL + LQR + orientasi,20045,success,172,35.9,1,2.49,9.7,1.0
+3,5.0,RL + LQR + orientasi,20046,success,177,6.2,1,1.45,0.7,1.0
+3,5.0,RL + LQR + orientasi,20047,success,145,84.4,0,0.78,63.9,0.0
+3,5.0,RL + LQR + orientasi,20048,success,141,69.2,0,0.5,57.3,0.0
+3,5.0,RL + LQR + orientasi,20049,success,244,46.9,1,1.11,11.8,0.0
+3,5.0,RL + LQR + orientasi,20050,success,223,38.4,1,0.29,10.3,0.0
+3,5.0,RL + LQR + orientasi,20051,collision,157,48.4,1,0.36,6.4,1.0
+3,5.0,RL + LQR + orientasi,20052,success,127,65.9,0,2.12,82.8,0.0
+3,5.0,RL + LQR + orientasi,20053,success,133,114.1,0,0.38,133.3,0.0
+3,5.0,RL + LQR + orientasi,20054,success,90,84.4,0,0.62,65.7,0.0
+3,5.0,RL + LQR + orientasi,20055,success,166,54.8,1,1.74,6.8,1.0
+3,5.0,RL + LQR + orientasi,20056,success,254,51.6,1,0.25,10.7,0.0
+3,5.0,RL + LQR + orientasi,20057,success,94,26.1,1,0.4,4.0,1.0
+3,5.0,RL + LQR + orientasi,20058,success,194,108.1,0,0.6,130.1,0.0
+3,5.0,RL + LQR + orientasi,20059,self_collision,70,107.1,0,,,
+3,5.0,RL + LQR + orientasi,20060,success,104,84.1,0,1.43,74.9,0.0
+3,5.0,RL + LQR + orientasi,20061,success,83,37.1,1,0.33,0.7,1.0
+3,5.0,RL + LQR + orientasi,20062,success,150,49.7,1,0.58,0.6,1.0
+3,5.0,RL + LQR + orientasi,20063,success,107,58.6,1,1.96,0.6,1.0
+3,5.0,RL + LQR + orientasi,20064,success,73,84.8,0,1.04,63.7,0.0
+3,5.0,RL + LQR + orientasi,20065,success,171,97.9,0,0.6,99.2,0.0
+3,5.0,RL + LQR + orientasi,20066,success,81,91.4,0,1.37,86.8,0.0
+3,5.0,RL + LQR + orientasi,20067,success,119,122.5,0,0.63,104.3,0.0
+3,5.0,RL + LQR + orientasi,20068,collision,86,105.0,0,0.81,109.2,0.0
+3,5.0,RL + LQR + orientasi,20069,success,104,107.2,0,0.68,86.1,0.0
+3,5.0,RL + LQR + orientasi,20070,success,205,61.3,0,5.98,54.2,0.0
+3,5.0,RL + LQR + orientasi,20071,success,144,122.0,0,0.72,144.5,0.0
+3,5.0,RL + LQR + orientasi,20072,success,114,95.9,0,0.31,76.8,0.0
+3,5.0,RL + LQR + orientasi,20073,success,190,11.4,1,0.42,11.1,0.0
+3,5.0,RL + LQR + orientasi,20074,success,130,67.9,0,0.83,50.9,0.0
+3,5.0,RL + LQR + orientasi,20075,success,171,38.4,1,1.85,7.9,1.0
+3,5.0,RL + LQR + orientasi,20076,self_collision,46,135.0,0,,,
+3,5.0,RL + LQR + orientasi,20077,success,128,57.3,1,0.6,0.7,1.0
+3,5.0,RL + LQR + orientasi,20078,success,118,114.0,0,0.82,94.6,0.0
+3,5.0,RL + LQR + orientasi,20079,success,117,67.8,0,0.65,66.0,0.0
+3,5.0,RL + LQR + orientasi,20080,success,133,41.0,1,2.33,8.7,1.0
+3,5.0,RL + LQR + orientasi,20081,success,120,134.2,0,1.67,131.4,0.0
+3,5.0,RL + LQR + orientasi,20082,collision,168,130.4,0,0.59,123.8,0.0
+3,5.0,RL + LQR + orientasi,20083,success,104,126.6,0,1.92,117.6,0.0
+3,5.0,RL + LQR + orientasi,20084,success,100,95.1,0,0.68,72.3,0.0
+3,5.0,RL + LQR + orientasi,20085,success,141,18.1,1,1.66,8.7,1.0
+3,5.0,RL + LQR + orientasi,20086,success,103,70.6,0,0.9,81.9,0.0
+3,5.0,RL + LQR + orientasi,20087,timeout,350,32.4,1,,,
+3,5.0,RL + LQR + orientasi,20088,success,109,105.8,0,1.01,83.3,0.0
+3,5.0,RL + LQR + orientasi,20089,collision,61,34.9,1,,,
+3,5.0,RL + LQR + orientasi,20090,success,165,17.3,1,0.37,14.2,0.0
+3,5.0,RL + LQR + orientasi,20091,success,145,63.3,0,0.6,56.4,0.0
+3,5.0,RL + LQR + orientasi,20092,self_collision,92,132.9,0,,,
+3,5.0,RL + LQR + orientasi,20093,success,80,67.3,0,0.92,44.7,0.0
+3,5.0,RL + LQR + orientasi,20094,success,272,49.7,1,0.25,12.3,0.0
+3,5.0,RL + LQR + orientasi,20095,success,196,21.5,1,0.32,11.4,0.0
+3,5.0,RL + LQR + orientasi,20096,success,99,16.5,1,2.46,2.5,1.0
+3,5.0,RL + LQR + orientasi,20097,success,153,62.1,0,0.6,60.7,0.0
+3,5.0,RL + LQR + orientasi,20098,success,90,91.8,0,0.63,84.9,0.0
+3,5.0,RL + LQR + orientasi,20099,success,95,35.9,1,0.63,9.8,0.917

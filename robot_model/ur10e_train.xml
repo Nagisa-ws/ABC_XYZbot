@@ -1,0 +1,163 @@
+<mujoco model="ur10e_with_gripper_train">
+  <!--
+    VERSI TRAINING (SIMPLIFIED).
+    Diturunkan dari MJCF resmi UR10e + gripper (FullBodyRobo.xml) yang diberikan
+    sebagai lampiran. Semua <geom mesh="..."/> dihapus dan digantikan dengan
+    primitif capsule/cylinder/box yang membungkus bentuk link secara wajar.
+
+    PENTING: seluruh data kinematika & dinamika (posisi/orientasi joint, joint
+    range, damping, forcerange, massa, inersia, definisi actuator, equality
+    constraint gripper, keyframe "home") IDENTIK dengan file MJCF asli.
+    Untuk link-link lengan (base..wrist_3), dimensi primitif visual/collision
+    diambil langsung dari geom class="collision" yang SUDAH ADA di file asli
+    (file aslinya sudah menyediakan collision primitives terpisah dari mesh
+    visual, sehingga geometri ini bukan estimasi baru melainkan primitif resmi
+    yang sudah disertakan pembuat model). Untuk gripper (Servo-v1 + 2 finger),
+    file asli hanya punya mesh (tidak ada collision primitive terpisah) -> di
+    sini diaproksimasi dengan box sederhana berdasarkan bounding kasar posisi
+    body & travel joint slide (0-0.025 m). Ini ESTIMASI dan harus diverifikasi
+    ulang bila presisi kontak gripper penting.
+
+    File ini TIDAK mereferensikan mesh/STL/OBJ apa pun -> tidak butuh assets/.
+  -->
+  <compiler angle="radian" autolimits="true"/>
+
+  <option integrator="implicitfast"/>
+
+  <default>
+    <default class="ur10e">
+      <material specular="0.5" shininess="0.25"/>
+      <joint axis="0 1 0" range="-6.28319 6.28319" armature="0.1"/>
+      <position ctrlrange="-6.2831 6.2831"/>
+      <general biastype="affine" ctrlrange="-6.2831 6.2831" gainprm="5000" biasprm="0 -5000 -500"/>
+      <default class="size4">
+        <joint damping="10"/>
+        <general forcerange="-330 330"/>
+      </default>
+      <default class="size3">
+        <joint damping="5"/>
+        <general forcerange="-150 150"/>
+        <default class="size3_limited">
+          <joint range="-3.1415 3.1415"/>
+          <general ctrlrange="-3.1415 3.1415"/>
+        </default>
+      </default>
+      <default class="size2">
+        <joint damping="2"/>
+        <general forcerange="-56 56"/>
+      </default>
+      <!-- visual == collision di versi training: satu set primitif dipakai untuk keduanya -->
+      <default class="link_geom">
+        <geom type="capsule" group="1" contype="1" conaffinity="1" rgba="0.6 0.6 0.65 1"/>
+        <default class="eef_geom">
+          <geom type="cylinder"/>
+        </default>
+      </default>
+      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4"/>
+    </default>
+  </default>
+
+  <asset>
+    <material class="ur10e" name="black" rgba="0.033 0.033 0.033 1"/>
+    <material class="ur10e" name="jointgray" rgba="0.278 0.278 0.278 1"/>
+    <material class="ur10e" name="linkgray" rgba="0.82 0.82 0.82 1"/>
+    <material class="ur10e" name="urblue" rgba="0.49 0.678 0.8 1"/>
+  </asset>
+
+  <worldbody>
+    <light name="spotlight" mode="targetbodycom" target="wrist_2_link" pos="0 -1 2"/>
+
+    <body name="base" gravcomp="1" quat="0 0 0 -1" childclass="ur10e">
+      <inertial mass="4.0" pos="0 0 0" diaginertia="0.0061063308908 0.0061063308908 0.01125"/>
+      <geom class="link_geom" material="linkgray" type="cylinder" size="0.08 0.05" pos="0 0 0"/>
+
+      <body name="shoulder_link" gravcomp="1" pos="0 0 0.181">
+        <inertial pos="0 0 0" mass="7.778" diaginertia="0.0314743 0.0314743 0.0218756"/>
+        <joint name="shoulder_pan_joint" class="size4" axis="0 0 1"/>
+        <geom class="link_geom" type="cylinder" material="urblue" size="0.078 0.08" pos="0 0 -0.05"/>
+
+        <body name="upper_arm_link" gravcomp="1" pos="0 0.176 0" quat="1 0 1 0">
+          <inertial pos="0 0 0.3065" mass="12.93" diaginertia="0.423074 0.423074 0.0363656"/>
+          <joint name="shoulder_lift_joint" class="size4"/>
+          <geom class="link_geom" material="urblue" pos="0 -0.05 0" quat="1 1 0 0" size="0.078 0.08"/>
+          <geom class="link_geom" material="linkgray" size="0.06 0.3" pos="0 0 0.3"/>
+
+          <body name="forearm_link" gravcomp="1" pos="0 -0.137 0.613">
+            <inertial pos="0 0 0.2855" mass="3.87" diaginertia="0.11059 0.11059 0.0108844"/>
+            <joint name="elbow_joint" class="size3_limited"/>
+            <geom class="link_geom" material="urblue" pos="0 0.08 0" quat="1 1 0 0" size="0.058 0.065"/>
+            <geom class="link_geom" material="linkgray" size="0.043 0.28" pos="0 0 0.29"/>
+
+            <body name="wrist_1_link" gravcomp="1" pos="0 0 0.571" quat="1 0 1 0">
+              <inertial pos="0 0.135 0" quat="0.5 0.5 -0.5 0.5" mass="1.96"
+                diaginertia="0.0055125 0.00510825 0.00510825"/>
+              <joint name="wrist_1_joint" class="size2"/>
+              <geom class="link_geom" material="black" pos="0 0.06 0" quat="1 1 0 0" size="0.05 0.07"/>
+
+              <body name="wrist_2_link" gravcomp="1" pos="0 0.135 0">
+                <inertial pos="0 0 0.12" quat="0.5 0.5 -0.5 0.5" mass="1.96"
+                  diaginertia="0.0055125 0.00510825 0.00510825"/>
+                <joint name="wrist_2_joint" axis="0 0 1" class="size2"/>
+                <geom class="link_geom" material="black" size="0.046 0.065" pos="0 0 0.05"/>
+                <geom class="link_geom" material="black" pos="0 0.028 0.12" quat="1 1 0 0" size="0.046 0.043"/>
+
+                <!-- JOINT KE-6 (WRIST 3 / END EFFECTOR) -->
+                <body name="wrist_3_link" gravcomp="1" pos="0 0 0.12">
+                  <inertial pos="0 0.092 0" quat="0 1 -1 0" mass="0.202"
+                    diaginertia="0.000204525 0.000144346 0.000144346"/>
+                  <joint name="wrist_3_joint" class="size2"/>
+                  <geom class="eef_geom" material="linkgray" pos="0 0.097 0" quat="1 1 0 0" size="0.046 0.02"/>
+                  <site name="attachment_site" pos="0 0.1 0" quat="-1 1 0 0"/>
+
+                  <!-- GRIPPER ASSEMBLY (primitif, estimasi bounding box) -->
+                  <body name="Servo-v1" gravcomp="1" pos="0 0.1 0" quat="-1 1 0 0">
+                    <inertial mass="3.424" pos="0 0 0.037" fullinertia="0.0027 0.0042 0.0035 0 0 0"/>
+                    <geom class="link_geom" type="box" material="black" size="0.03 0.025 0.04" pos="0 0 0.037"/>
+                    <!-- titik referensi TCP (tool center point) untuk target pose IK -->
+                    <site name="tcp_site" pos="0 0 0.10" size="0.004" rgba="1 0 0 1"/>
+
+                    <!-- Finger Kanan -->
+                    <body name="slide-right-v3" gravcomp="1" pos="-0.0223 -0.0178 0.0739" euler="0 0 3.14159">
+                      <inertial mass="0.210" pos="0.007 -0.0075 0.020" fullinertia="0.0001 0.0001 0.00005 0 0 0"/>
+                      <joint name="Servo-v1_Slider-1" type="slide" axis="1 0 0" range="0 0.025" damping="0.5"/>
+                      <geom class="link_geom" type="box" material="jointgray" size="0.006 0.008 0.02" pos="0.007 -0.0075 0.020"/>
+                    </body>
+
+                    <!-- Finger Kiri -->
+                    <body name="slide-left-v1" gravcomp="1" pos="0.0242 0.0178 0.0739" euler="0 0 0">
+                      <inertial mass="0.210" pos="0.007 -0.0075 0.020" fullinertia="0.0001 0.0001 0.00005 0 0 0"/>
+                      <joint name="Servo-v1_Slider-2" type="slide" axis="1 0 0" range="0 0.025" damping="0.5"/>
+                      <geom class="link_geom" type="box" material="jointgray" size="0.006 0.008 0.02" pos="0.007 -0.0075 0.020"/>
+                    </body>
+                  </body>
+
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Sinkronisasi Kaku & Responsif Antar Kedua Joint Capit -->
+  <equality>
+    <joint joint1="Servo-v1_Slider-1" joint2="Servo-v1_Slider-2" polycoef="0 1 0 0 0" solref="0.002 1" solimp="0.95 0.99 0.001 0.5 2"/>
+  </equality>
+
+  <actuator>
+    <general class="size4" name="shoulder_pan" joint="shoulder_pan_joint"/>
+    <general class="size4" name="shoulder_lift" joint="shoulder_lift_joint"/>
+    <general class="size3_limited" name="elbow" joint="elbow_joint"/>
+    <general class="size2" name="wrist_1" joint="wrist_1_joint"/>
+    <general class="size2" name="wrist_2" joint="wrist_2_joint"/>
+    <general class="size2" name="wrist_3" joint="wrist_3_joint"/>
+
+    <!-- Kontrol Utama Gripper -->
+    <position name="gripper_actuator" joint="Servo-v1_Slider-1" ctrlrange="-2 0" kp="300"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home" qpos="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0 0 0" ctrl="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0 0"/>
+  </keyframe>
+</mujoco>

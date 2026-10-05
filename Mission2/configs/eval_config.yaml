@@ -1,0 +1,38 @@
+# Mission2/configs/eval_config.yaml
+# Konfigurasi EVALUASI Misi 2 dengan MuJoCo viewer.
+# Jalankan: python eval_mission2.py   (tanpa argumen CLI)
+
+paths:
+  onnx_model: latest             # 'latest' = versi tertinggi models/onnx_mission2_v*.onnx, atau path eksplisit
+  onnx_dir: models
+  onnx_prefix: onnx_mission2
+  robot_model_path: robot_model/scene_eval.xml     # model evaluasi (mesh visual; collision identik dgn training)
+  env_config: Mission2/configs/domain_randomization.yaml
+  log_csv: checkpoints/mission2/eval_log.csv
+  debug_dir: checkpoints/mission2/eval_debug
+
+viewer:
+  enabled: true                  # false -> headless (mis. server tanpa layar)
+  realtime_factor: 1.0           # 1.0 = waktu nyata, 0 = secepat mungkin
+  show_trail: true               # jejak end-effector
+  pause_between_scenarios_sec: 1.0
+  keep_open_when_done: true      # biarkan jendela terbuka setelah semua skenario selesai
+
+rollout:
+  n_scenarios: 10
+  seed_offset: 1000
+  randomize: false               # true -> domain randomization (payload, gravitasi) aktif saat evaluasi
+  obs_noise_std: 0.0             # derau sensor saat evaluasi
+  t1_reach_threshold: null       # ambang 'T1 tercapai' (fase A->B); null -> ikut env_config (2 cm)
+  success_pos_threshold: null   # null -> ikut env_config
+  max_seconds_per_scenario: 60
+
+hybrid:
+  enabled: true             # true -> RL + controller LQR (presisi). Lihat KONTROL_HIBRIDA.md
+  config: null                   # null -> shared/control/controller.yaml
+  orientation: true              # true -> juga sejajarkan moncong dgn jalur (hanya jalur menurun curam); null -> ikut controller.yaml
+
+debug:
+  enabled: true
+  replay_best_episode: true      # plot 3D lintasan untuk episode terbaik & terburuk
+  compare_onnx_checkpoint: false

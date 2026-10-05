@@ -1,0 +1,92 @@
+# Mission3/configs/ppo_config.yaml
+# Konfigurasi TRAINING Misi 3 (PPO, normalisasi, transfer, ekspor, debug).
+# Jalankan: python train_mission3.py   (tanpa argumen CLI)
+
+runtime:
+  torch_num_threads: 1
+  device: cpu                    # MLP kecil: CPU umumnya lebih cepat dari GPU
+  progress_print_interval_sec: 15
+
+run:
+  timesteps: 6_000_000
+  n_envs: 4
+  vec_env: auto                  # auto | subproc | dummy
+  seed: 6
+  logdir: checkpoints/mission3/tb_logs
+  ckpt_dir: checkpoints/mission3
+  ckpt_freq: 100_000             # checkpoint periodik (model + VecNormalize)
+  eval_freq: 50_000              # evaluasi deterministik -> best_model
+  eval_episodes: 30              # skenario evaluasi TETAP tiap putaran (eval_seed) -> perbandingan adil
+  eval_seed: 424242
+
+ppo:
+  n_steps: 2048                 # batch 4 env x 2048 = 8192: gradien lebih bersih (tabrakan jarang & berderau)
+  batch_size: 1024
+  n_epochs: 5
+  learning_rate: 1.5e-4
+  lr_schedule: constant          # constant | linear
+  gamma: 0.995
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.003                # eksplorasi dipertahankan: penghindaran adalah perilaku BARU
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  net_arch: [256, 256]           # sama di SEMUA misi (syarat transfer bobot)
+  activation_fn: tanh
+  target_kl: 0.03
+
+normalization:
+  clip_obs: 10.0
+  epsilon: 1.0e-8
+  norm_reward: false
+
+transfer:                        # muat bobot Misi 2 (observasi terpadu -> dimensi sama)
+  enabled: true
+  source_mission: 2
+  source_model: checkpoints/mission2/best_model.zip
+  source_vecnormalize: checkpoints/mission2/best_vecnormalize.pkl
+  zero_new_input_weights: true   # bobot input untuk fitur yang baru aktif di-nol-kan
+  # --- perlindungan fine-tuning (tanpa ini policy hasil transfer runtuh: 75% -> 0% dalam 25k langkah) ---
+  freeze_obs_rms: true           # statistik normalisasi TIDAK diperbarui (jika diperbarui, input actor bergeser)
+  warm_stats_steps: 8000         # statistik dimensi baru diisi dari rollout nyata misi ini
+  obs_rms_count: 50000.0
+  critic_warmup_steps: 100000    # actor dibekukan, hanya critic yang dilatih (critic baru masih acak)
+  log_std_init: -1.4             # std aksi 0.25 seragam (Misi 2 berakhir ~0.18): ruang eksplorasi untuk menghindar
+
+# ─── Kurikulum kesulitan (Misi 3) ───
+#   obstacle_margin : koridor aman di sekitar garis T1->T2 (rintangan lebih dekat dari ini dipangkas).
+#                     Di fase B policy berada di garis (cross-track ~2.5 cm) sehingga penghindaran DAPAT dipelajari.
+#   approach_margin : koridor aman di sekitar jalur home->T1. Jalur alami policy (hasil Misi 1-2) melengkung
+#                     dan menyimpang hingga 10-20 cm dari jalur referensi mana pun, dan tidak dapat diamati
+#                     dari observasi; margin < 15 cm = tabrakan fase A yang tak terhindarkan (terukur).
+#   reach_r_max/z_max: batas radius & tinggi T1. Policy Misi 1-2 hanya pernah menyelesaikan reaching di
+#                     r 0.35-0.48 m, z 0.43-0.63 m; T1 jauh di luar itu membuat policy berhenti 2-5 cm dari T1.
+# Naik 1 level bila success rate di level aktif >= advance_success_rate. Level terakhir = tugas penuh.
+curriculum:
+  enabled: true
+  advance_success_rate: 0.80
+  check_every_n_episodes: 50
+  window_episodes: 100
+  warmup_episodes: 100
+  levels:
+    - {obstacle_margin: 0.12, approach_margin: 0.20, reach_r_max: 0.52, reach_z_max: 0.72}
+    - {obstacle_margin: 0.08, approach_margin: 0.20, reach_r_max: 0.60, reach_z_max: 0.80}
+    - {obstacle_margin: 0.05, approach_margin: 0.20, reach_r_max: 0.70, reach_z_max: 0.88}
+    - {obstacle_margin: 0.03, approach_margin: 0.15}
+    - {obstacle_margin: 0.01, approach_margin: 0.15}
+
+export:
+  onnx_dir: models               # folder bersama semua misi
+  name_prefix: onnx_mission3     # -> models/onnx_mission3_v1.onnx, _v2, ...
+  source: best                   # best | final
+  verify_tolerance: 1.0e-4
+
+debug:
+  enabled: true
+  output_dir: checkpoints/mission3/debug
+  run_sanity_check_before_training: true
+  sanity_n_ik_targets: 20
+  sanity_n_resets: 10
+  sanity_n_scripted_episodes: 10
+  replay_episodes: 3
+  robustness_episodes: 20

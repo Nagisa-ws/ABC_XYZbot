@@ -1,0 +1,32 @@
+# Mission1/configs/eval_config.yaml
+# Konfigurasi EVALUASI Misi 1 dengan MuJoCo viewer.
+# Jalankan: python eval_mission1.py   (tanpa argumen CLI)
+
+paths:
+  onnx_model: latest             # 'latest' = versi tertinggi models/onnx_mission1_v*.onnx, atau path eksplisit
+  onnx_dir: models
+  onnx_prefix: onnx_mission1
+  robot_model_path: robot_model/scene_eval.xml     # model evaluasi (mesh visual; collision identik dgn training)
+  env_config: Mission1/configs/domain_randomization.yaml
+  log_csv: checkpoints/mission1/eval_log.csv
+  debug_dir: checkpoints/mission1/eval_debug
+
+viewer:
+  enabled: true                  # false -> headless (mis. server tanpa layar)
+  realtime_factor: 1.0           # 1.0 = waktu nyata, 0 = secepat mungkin
+  show_trail: true               # jejak end-effector
+  pause_between_scenarios_sec: 1.0
+  keep_open_when_done: true      # biarkan jendela terbuka setelah semua skenario selesai
+
+rollout:
+  n_scenarios: 10
+  seed_offset: 1000
+  randomize: false               # true -> domain randomization (payload, gravitasi) aktif saat evaluasi
+  obs_noise_std: 0.0             # derau sensor saat evaluasi
+  success_pos_threshold: 0.005   # null -> ikut env_config
+  max_seconds_per_scenario: 60
+
+debug:
+  enabled: true
+  replay_best_episode: true      # plot 3D lintasan untuk episode terbaik & terburuk
+  compare_onnx_checkpoint: false

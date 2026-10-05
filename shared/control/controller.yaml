@@ -1,0 +1,45 @@
+# shared/control/controller.yaml
+# Konfigurasi controller hibrida (RL + LQR) untuk Misi 2 dan 3.
+# RL membawa gripper ke dekat T1; di dalam `handover_distance` (atau saat fase 1 dimulai) controller
+# LQR mengambil alih POSISI (aksi 0..2); aksi rotasi tetap dari RL.
+# Bobot LQR ditala pada 40 skenario Misi 2 (70 kombinasi acak) dan divalidasi pada 60 skenario lain.
+
+controller:
+  law: lqr                 # lqr | p
+  max_pos_delta: 0.05      # HARUS sama dengan action.max_pos_delta di config env
+  q_e_cross: 1115.0
+  q_v_cross: 6336.6
+  q_e_along: 27.1
+  q_v_along: 701.4
+  r: 4.523
+  kp: 0.4                  # hanya untuk law: p
+  lead_approach: 0.25
+  lead_line: 0.03
+  v_cruise: 0.004
+  taper_gain: 0.25
+
+hybrid:
+  enabled: true
+  handover_distance: 0.08  # m; 4-15 cm memberi hasil praktis identik (terukur)
+  blend_steps: 0           # 0 = serah-terima langsung (pencampuran 5-15 langkah tidak berpengaruh, terukur)
+
+benchmark:
+  n_scenarios: 100
+  seed_start: 20000
+  thresholds: [0.02, 0.005]   # ambang sukses T1/T2: tugas standar (2 cm) dan presisi (5 mm)
+
+# Penyejajaran moncong gripper dengan jalur T1->T2 (OPSIONAL; default mati). Hanya diaktifkan untuk jalur
+# yang MENURUN CURAM: di sana tidak mengurangi sukses (terukur); pada jalur mendatar/menanjak sukses turun
+# 11-18 poin (self-collision & kontak lantai), jadi tidak diaktifkan.
+# Saat aktif: posisi DAN orientasi diserahkan ke controller sejak `start_distance` dari T1 (RL tidak toleran
+# bila orientasinya berubah saat ia masih mengendalikan), dan batas kerucut orientasi env harus dilonggarkan
+# (policy.cone_request -> env.max_orient_dev).
+orientation:
+  enabled: false
+  gate_angle_deg: 60.0       # aktif hanya bila sudut jalur terhadap "lurus ke bawah" < nilai ini
+  start_distance: 0.40       # m dari T1: serah-terima posisi + awal rotasi (25-40 cm aman; 60 cm gagal)
+  k_rot: 0.3
+  max_rot_delta: 0.08        # HARUS sama dengan action.max_rot_delta di config env
+  lead_max_deg: 15.0         # anti-windup: batas perintah rotasi mendahului orientasi aktual
+  hold_until_deg: 10.0       # tahan gerak sepanjang jalur sampai galat moncong < nilai ini
+  max_hold_steps: 80

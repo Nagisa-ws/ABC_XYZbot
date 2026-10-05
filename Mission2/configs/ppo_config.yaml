@@ -1,0 +1,71 @@
+# Mission2/configs/ppo_config.yaml
+# Konfigurasi TRAINING Misi 2 (PPO, normalisasi, transfer, ekspor, debug).
+# Jalankan: python train_mission2.py   (tanpa argumen CLI)
+
+runtime:
+  torch_num_threads: 1
+  device: cpu                    # MLP kecil: CPU umumnya lebih cepat dari GPU
+  progress_print_interval_sec: 15
+
+run:
+  timesteps: 6_000_000
+  n_envs: 4
+  vec_env: auto                  # auto | subproc | dummy
+  seed: 5
+  logdir: checkpoints/mission2/tb_logs
+  ckpt_dir: checkpoints/mission2
+  ckpt_freq: 100_000             # checkpoint periodik (model + VecNormalize)
+  eval_freq: 50_000              # evaluasi deterministik -> best_model
+  eval_episodes: 30              # skenario evaluasi TETAP tiap putaran (eval_seed) -> perbandingan adil
+  eval_seed: 424242
+
+ppo:
+  n_steps: 1024
+  batch_size: 512
+  n_epochs: 5
+  learning_rate: 1.0e-4          # fine-tuning dari misi sebelumnya: kecil (2e-4 merusak policy hasil transfer)
+  lr_schedule: constant          # constant | linear
+  gamma: 0.995
+  gae_lambda: 0.95
+  clip_range: 0.15
+  ent_coef: 0.0                  # tanpa bonus entropi: derau aksi harus menyusut demi ketelitian
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  net_arch: [256, 256]           # sama di SEMUA misi (syarat transfer bobot)
+  activation_fn: tanh
+  target_kl: 0.02
+
+normalization:
+  clip_obs: 10.0
+  epsilon: 1.0e-8
+  norm_reward: false
+
+transfer:                        # muat bobot Misi 1 (observasi terpadu -> dimensi sama)
+  enabled: true
+  source_mission: 1
+  source_model: checkpoints/mission1/best_model.zip
+  source_vecnormalize: checkpoints/mission1/best_vecnormalize.pkl
+  zero_new_input_weights: true   # bobot input untuk fitur yang baru aktif di-nol-kan
+  # --- perlindungan fine-tuning (tanpa ini policy hasil transfer runtuh: 75% -> 0% dalam 25k langkah) ---
+  freeze_obs_rms: true           # statistik normalisasi TIDAK diperbarui (jika diperbarui, input actor bergeser)
+  warm_stats_steps: 8000         # statistik dimensi baru diisi dari rollout nyata misi ini
+  obs_rms_count: 50000.0
+  critic_warmup_steps: 150000    # actor dibekukan, hanya critic yang dilatih (critic baru masih acak)
+  log_std_init: null             # JANGAN reset std aksi; pertahankan dari misi sebelumnya
+  log_std_max: -1.386            # batas atas std aksi 0.25
+
+export:
+  onnx_dir: models               # folder bersama semua misi
+  name_prefix: onnx_mission2     # -> models/onnx_mission2_v1.onnx, _v2, ...
+  source: best                   # best | final
+  verify_tolerance: 1.0e-4
+
+debug:
+  enabled: true
+  output_dir: checkpoints/mission2/debug
+  run_sanity_check_before_training: true
+  sanity_n_ik_targets: 20
+  sanity_n_resets: 10
+  sanity_n_scripted_episodes: 10
+  replay_episodes: 3
+  robustness_episodes: 20

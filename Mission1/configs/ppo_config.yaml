@@ -1,0 +1,69 @@
+# Mission1/configs/ppo_config.yaml
+# Konfigurasi TRAINING Misi 1 (PPO, normalisasi, transfer, ekspor, debug).
+# Jalankan: python train_mission1.py   (tanpa argumen CLI)
+
+runtime:
+  torch_num_threads: 1
+  device: cpu                    # MLP kecil: CPU umumnya lebih cepat dari GPU
+  progress_print_interval_sec: 15
+
+run:
+  timesteps: 10_000_000
+  n_envs: 4
+  vec_env: auto                  # auto | subproc | dummy
+  seed: 4
+  logdir: checkpoints/mission1/tb_logs
+  ckpt_dir: checkpoints/mission1
+  ckpt_freq: 1_000_000             # checkpoint periodik (model + VecNormalize)
+  eval_freq: 100_000              # evaluasi deterministik -> best_model
+  eval_episodes: 50
+
+ppo:
+  n_steps: 1024
+  batch_size: 512
+  n_epochs: 8
+  learning_rate: 0.0003
+  lr_schedule: constant          # constant | linear
+  gamma: 0.995
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.003
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  net_arch: [256, 256]           # sama di SEMUA misi (syarat transfer bobot)
+  activation_fn: tanh
+  target_kl: 0.03
+
+normalization:
+  clip_obs: 10.0
+  epsilon: 1.0e-8
+  norm_reward: false
+
+transfer:
+  enabled: false
+
+export:
+  onnx_dir: models               # folder bersama semua misi
+  name_prefix: onnx_mission1     # -> models/onnx_mission1_v1.onnx, _v2, ...
+  source: best                   # best | final
+  verify_tolerance: 1.0e-4
+
+debug:
+  enabled: true
+  output_dir: checkpoints/mission1/debug
+  run_sanity_check_before_training: true
+  sanity_n_ik_targets: 20
+  sanity_n_resets: 10
+  sanity_n_scripted_episodes: 10
+  replay_episodes: 3
+  robustness_episodes: 20
+
+# ─── Adaptive Threshold (Misi 1) ───
+adaptive:
+  enabled: true
+  thresholds: [0.10, 0.08, 0.06, 0.04, 0.02, 0.01, 0.005]   # r_thresh: 10 cm -> 5 cm -> 2 cm -> 5 mm
+  success_rate_to_advance: 0.85           # naik level bila success rate >= 85%
+  check_every_n_episodes: 50
+  window_episodes: 100
+  warmup_episodes: 100                    # minimum episode per level sebelum dievaluasi
+  reward_success_multiplier: 1.20          # success reward = R_base * 1.5^level (hanya ini yang naik)
