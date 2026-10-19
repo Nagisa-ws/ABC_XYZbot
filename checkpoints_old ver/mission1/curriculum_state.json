@@ -1,0 +1,26 @@
+{
+  "level": 3,
+  "threshold": 0.005,
+  "multiplier": 3.375,
+  "timesteps": 1765344,
+  "history": [
+    {
+      "level": 0,
+      "threshold": 0.1,
+      "success_rate": 0.85,
+      "timesteps": 391668
+    },
+    {
+      "level": 1,
+      "threshold": 0.05,
+      "success_rate": 0.85,
+      "timesteps": 638552
+    },
+    {
+      "level": 2,
+      "threshold": 0.02,
+      "success_rate": 0.85,
+      "timesteps": 1765344
+    }
+  ]
+}

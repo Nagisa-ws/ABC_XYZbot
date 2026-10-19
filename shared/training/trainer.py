@@ -99,6 +99,8 @@ def build_ppo(cfg: dict, train_env, logdir: Path, seed: int, device: str) -> PPO
     arch = list(p.get("net_arch", [128, 128]))
     policy_kwargs = dict(net_arch=dict(pi=arch, vf=arch),
                          activation_fn=_ACT[str(p.get("activation_fn", "tanh")).lower()])
+    if p.get("log_std_init") is not None:          # std eksplorasi awal = exp(log_std_init); default SB3 = 0 (std 1)
+        policy_kwargs["log_std_init"] = float(p["log_std_init"])
     return PPO(
         "MlpPolicy", train_env, learning_rate=_lr(p), n_steps=int(p["n_steps"]),
         batch_size=int(p["batch_size"]), n_epochs=int(p["n_epochs"]), gamma=float(p["gamma"]),
@@ -108,6 +110,45 @@ def build_ppo(cfg: dict, train_env, logdir: Path, seed: int, device: str) -> PPO
         target_kl=None if p.get("target_kl") is None else float(p["target_kl"]),
         policy_kwargs=policy_kwargs, tensorboard_log=str(logdir), seed=seed, device=device,
         verbose=1)
+
+
+def load_for_resume(cfg: dict, rs: dict, root: Path, train_env, logdir: Path, device: str, log=print) -> PPO:
+    """Muat model + statistik VecNormalize dari checkpoint untuk melanjutkan training.
+
+    Hyperparameter arsitektur & rollout (net_arch, n_steps, batch) diambil dari checkpoint; learning rate,
+    clip range, ent_coef dan target_kl diambil dari config sekarang (boleh diubah saat melanjutkan)."""
+    import pickle
+    p = cfg["ppo"]
+    with open(root / rs["vecnormalize"], "rb") as f:
+        vn = pickle.load(f)
+    train_env.obs_rms = vn.obs_rms
+    if getattr(vn, "ret_rms", None) is not None:
+        train_env.ret_rms = vn.ret_rms
+    custom = {"learning_rate": _lr(p), "clip_range": float(p["clip_range"]), "ent_coef": float(p["ent_coef"]),
+              "target_kl": None if p.get("target_kl") is None else float(p["target_kl"])}
+    model = PPO.load(str(root / rs["model"]), env=train_env, device=device, custom_objects=custom,
+                     tensorboard_log=str(logdir))
+    log(f"[resume] model dimuat dari {rs['model']} ({model.num_timesteps:,} langkah); "
+        f"VecNormalize dari {rs['vecnormalize']}")
+    return model
+
+
+def restore_curriculum(callbacks: list, rs: dict, root: Path, log=print):
+    """Kembalikan level kurikulum (adaptive threshold Misi 1 / kesulitan Misi 3) dari file status JSON."""
+    path = rs.get("curriculum_state")
+    if not path:
+        return
+    path = root / path
+    if not path.exists():
+        log(f"[resume] status kurikulum tidak ada ({path}); kurikulum mulai dari level 0")
+        return
+    import json
+    st = json.loads(path.read_text(encoding="utf-8"))
+    for cb in callbacks:
+        if hasattr(cb, "level") and hasattr(cb, "history"):
+            cb.level = int(st.get("level", 0))
+            cb.history = list(st.get("history", []))
+            log(f"[resume] kurikulum dilanjutkan dari level {cb.level}")
 
 
 # ---------------------------------------------------------------------- #
@@ -162,9 +203,17 @@ def train_mission(*, mission_id: int, project_root: Path, ppo_cfg_path: str, env
     seed = int(run.get("seed", 0))
     _set_seeds(seed)
 
+    # resume: lanjutkan training dari checkpoint misi INI (model + VecNormalize + level kurikulum)
+    rs = cfg.get("resume", {}) or {}
+    resume = bool(rs.get("enabled", False))
+    if resume:
+        for key in ("model", "vecnormalize"):
+            if not rs.get(key) or not (root / rs[key]).exists():
+                raise FileNotFoundError(f"resume.enabled = true, tetapi resume.{key} tidak ada: {root / str(rs.get(key))}")
+
     # gagal-cepat: transfer butuh checkpoint misi sebelumnya (sebelum sanity check/pembuatan env)
     tc = cfg.get("transfer", {}) or {}
-    if tc.get("enabled", False):
+    if tc.get("enabled", False) and not resume:
         for key in ("source_model", "source_vecnormalize"):
             if not (root / tc[key]).exists():
                 raise FileNotFoundError(
@@ -202,11 +251,17 @@ def train_mission(*, mission_id: int, project_root: Path, ppo_cfg_path: str, env
         clip_obs=float(norm["clip_obs"]), epsilon=float(norm["epsilon"]))
     ctx.train_env, ctx.eval_env = train_env, eval_env
 
-    # ---- 3. PPO (+ transfer) ----
-    model = build_ppo(cfg, train_env, ctx.logdir, seed, device)
-    ctx.model = model
+    # ---- 3. PPO (+ transfer / resume) ----
     tcfg = cfg.get("transfer", {}) or {}
-    if tcfg.get("enabled", False):
+    if resume:
+        model = load_for_resume(cfg, rs, root, train_env, ctx.logdir, device, log=log)
+        eval_env.obs_rms = train_env.obs_rms
+        if tcfg.get("enabled", False) and tcfg.get("freeze_obs_rms", True):
+            train_env.training = False          # sama dengan run asalnya: statistik tetap beku
+    else:
+        model = build_ppo(cfg, train_env, ctx.logdir, seed, device)
+    ctx.model = model
+    if tcfg.get("enabled", False) and not resume:
         transfer_from_previous(model, train_env, tcfg, root, mission_id, log=log)
         # eval env memakai stats train (disinkron oleh callback), tetapi inisialisasi juga:
         eval_env.obs_rms = train_env.obs_rms
@@ -222,15 +277,25 @@ def train_mission(*, mission_id: int, project_root: Path, ppo_cfg_path: str, env
     extra = hooks.build_callbacks(ctx) if hooks.build_callbacks else []
     total = int(run["timesteps"])
     warmup = []
-    if tcfg.get("enabled", False) and int(tcfg.get("critic_warmup_steps", 0)) > 0:
+    if tcfg.get("enabled", False) and int(tcfg.get("critic_warmup_steps", 0)) > 0 and not resume:
         warmup = [CriticWarmupCallback(int(tcfg["critic_warmup_steps"]))]
+    initial_best = None
+    if resume:
+        restore_curriculum(extra, rs, root, log=log)
+        info_path = ctx.ckpt_dir / "best_model_info.json"
+        if info_path.exists():
+            import json
+            initial_best = json.loads(info_path.read_text(encoding="utf-8"))
+            log(f"[resume] best_model lama (level {initial_best.get('level')}, success "
+                f"{initial_best.get('success_rate', 0) * 100:.0f}%) hanya diganti bila hasil baru lebih baik")
     callbacks = [reason_cb, *warmup, *extra,
                  ProgressCallback(total, float(rt.get("progress_print_interval_sec", 15)), reason_cb),
                  BestModelEvalCallback(eval_env, int(run.get("eval_episodes", 20)),
                                        int(run.get("eval_freq", 25_000)), str(ctx.ckpt_dir),
                                        level_fn=lambda: ctx.level_fn(),
                                        eval_seed=int(run.get("eval_seed", 424_242)),
-                                       eval_at_start=bool(tcfg.get("enabled", False))),
+                                       eval_at_start=bool(tcfg.get("enabled", False)) and not resume,
+                                       initial_best=initial_best),
                  CheckpointCallback(max(1, int(run["ckpt_freq"]) // n_envs), str(ctx.ckpt_dir / "periodic"),
                                     name_prefix=f"mission{mission_id}", save_vecnormalize=True)]
 
@@ -240,8 +305,9 @@ def train_mission(*, mission_id: int, project_root: Path, ppo_cfg_path: str, env
     t0 = time.time()
     interrupted = False
     try:
+        # resume: hitungan langkah berlanjut (TensorBoard menyambung); `total` = langkah TAMBAHAN
         model.learn(total_timesteps=total, callback=CallbackList(callbacks),
-                    tb_log_name=f"mission{mission_id}", progress_bar=False)
+                    tb_log_name=f"mission{mission_id}", progress_bar=False, reset_num_timesteps=not resume)
     except KeyboardInterrupt:
         interrupted = True
         log("\n[train] dihentikan pengguna (Ctrl+C) - menyimpan & mengekspor model terbaik...")
@@ -272,7 +338,12 @@ def train_mission(*, mission_id: int, project_root: Path, ppo_cfg_path: str, env
         except Exception as e:                                   # debug tidak boleh menggagalkan hasil
             log(f"[debug] peringatan: {type(e).__name__}: {e}")
 
-    train_env.close()
-    eval_env.close()
+    # Setelah Ctrl+C, proses worker SubprocVecEnv sudah ikut berhenti (SIGINT), sehingga close() bisa melempar
+    # BrokenPipeError/EOFError. Semua berkas sudah tersimpan di titik ini; abaikan galat penutupan itu.
+    for env in (train_env, eval_env):
+        try:
+            env.close()
+        except (BrokenPipeError, EOFError, ConnectionResetError, OSError):
+            pass
     log(f"\nSELESAI. ONNX: {export['onnx_path']}\nTensorBoard: tensorboard --logdir {ctx.logdir}")
     return result

@@ -23,6 +23,7 @@ import torch
 import torch.nn as nn
 
 from shared.envs.obs_layout import OBS_DIM
+from shared.exporter.versioning import latest_versioned_onnx_path, next_versioned_onnx_path  # noqa: F401
 
 
 class NormalizedOnnxablePolicy(nn.Module):
@@ -68,22 +69,6 @@ def vecnormalize_stats_from_pkl(path: str):
         vn = pickle.load(f)
     return (np.array(vn.obs_rms.mean), np.array(vn.obs_rms.var),
             float(vn.clip_obs), float(vn.epsilon))
-
-
-def next_versioned_onnx_path(models_dir: str, prefix: str) -> Path:
-    """models/<prefix>_v<N>.onnx dengan N = versi terbesar yang ada + 1 (mulai dari 1)."""
-    d = Path(models_dir)
-    d.mkdir(parents=True, exist_ok=True)
-    pat = re.compile(rf"^{re.escape(prefix)}_v(\d+)\.onnx$")
-    vers = [int(m.group(1)) for f in d.iterdir() if (m := pat.match(f.name))]
-    return d / f"{prefix}_v{(max(vers) + 1) if vers else 1}.onnx"
-
-
-def latest_versioned_onnx_path(models_dir: str, prefix: str) -> Path | None:
-    d = Path(models_dir)
-    pat = re.compile(rf"^{re.escape(prefix)}_v(\d+)\.onnx$")
-    found = [(int(m.group(1)), f) for f in d.iterdir() if (m := pat.match(f.name))] if d.exists() else []
-    return max(found)[1] if found else None
 
 
 def write_onnx_metadata(onnx_path: str, meta: dict):

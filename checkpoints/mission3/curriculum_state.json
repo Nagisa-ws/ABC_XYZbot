@@ -28,27 +28,27 @@
       "approach_margin": 0.15
     }
   ],
-  "timesteps": 61512,
+  "timesteps": 42532,
   "history": [
     {
       "level": 0,
-      "success_rate": 0.94,
-      "timesteps": 10664
+      "success_rate": 0.97,
+      "timesteps": 9824
     },
     {
       "level": 1,
-      "success_rate": 0.97,
-      "timesteps": 21164
+      "success_rate": 0.98,
+      "timesteps": 20212
     },
     {
       "level": 2,
-      "success_rate": 0.94,
-      "timesteps": 32224
+      "success_rate": 0.95,
+      "timesteps": 31536
     },
     {
       "level": 3,
-      "success_rate": 0.8,
-      "timesteps": 61512
+      "success_rate": 0.94,
+      "timesteps": 42532
     }
   ]
 }

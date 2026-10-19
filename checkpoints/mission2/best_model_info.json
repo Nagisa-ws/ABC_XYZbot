@@ -1,12 +1,16 @@
 {
   "success_rate": 1.0,
-  "mean_return": 19.01173141697994,
-  "mean_steps": 110.23333333333333,
-  "mean_final_dist": 0.017957812060336996,
+  "mean_return": 11.664448533348816,
+  "mean_steps": 109.0,
+  "mean_final_dist": 0.017610402817943578,
   "reasons": {
     "success": 30
   },
-  "cross_track_mean": 0.020826840197794284,
+  "cross_track_mean": 0.018722187281970462,
+  "path_ratio_A": 1.0387162273285337,
+  "rot_travel_deg": 48.98519116521805,
+  "tilt_mean_deg": 5.393310416024149,
+  "action_jerk": 0.09136237458467819,
   "level": 0,
-  "timesteps": 5950000
+  "timesteps": 7150000
 }

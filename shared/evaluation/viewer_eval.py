@@ -25,7 +25,7 @@ from shared.config_utils import load_yaml
 from shared.debug_common.common import plot_replay_trajectory, run_policy_episode
 from shared.debug_common.post_training import onnx_session, onnx_vs_checkpoint
 from shared.debug_common.common import make_predict_fn_onnx
-from shared.exporter import latest_versioned_onnx_path
+from shared.exporter.versioning import latest_versioned_onnx_path
 
 _I3 = np.eye(3).flatten()
 _GREEN = np.array([0.1, 0.9, 0.2, 1.0], np.float32)

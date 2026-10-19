@@ -240,7 +240,7 @@ class Stage3ObstacleEnv(PathTaskMixin, BaseArmEnv):
                 self._rc["obstacle"] = r_obs
                 reward += r_obs
             if clear <= self._collision_margin:
-                pen = self._w("collision_penalty", -100.0)
+                pen = self._failure_penalty(self._w("collision_penalty", -100.0))
                 self._rc["collision"] = pen
                 return reward + pen, True, "collision"
             if not potential_mode and clear < self._d_safe:

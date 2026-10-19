@@ -39,19 +39,27 @@ def run(env_factory, onnx_path: str, out_dir: str, n_episodes: int = 15, n_repla
         ct = 1000 * r.cross_track[b]
         ax[0].plot(ct, color="tab:green" if rc["success"] else "tab:red", alpha=0.6)
         means.append(ct.mean()); maxs.append(ct.max())
-    ax[0].set_title("Cross-track error fase B (mm) per step"); ax[0].set_xlabel("step fase B")
+    ax[0].set_title(f"Cross-track error fase B (mm) per step ({len(means)} dari {len(results)} episode masuk fase B)",
+                    fontsize=10)
+    ax[0].set_xlabel("step fase B")
     ax[0].grid(alpha=0.3)
+    ax[1].set_title("Cross-track rata-rata / episode (mm)")
+    ax[2].set_title("Cross-track maksimum / episode (mm)")
     if means:
-        ax[1].hist(means, bins=10, color="tab:blue"); ax[1].set_title("Cross-track rata-rata / episode (mm)")
-        ax[2].hist(maxs, bins=10, color="tab:orange"); ax[2].set_title("Cross-track maksimum / episode (mm)")
+        ax[1].hist(means, bins=10, color="tab:blue")
+        ax[2].hist(maxs, bins=10, color="tab:orange")
+    else:
+        for a in ax:                 # beri keterangan, bukan panel kosong
+            a.text(0.5, 0.5, "tidak ada episode yang mencapai T1:\nfase B (penyusuran T1-T2) tidak pernah dimulai",
+                   ha="center", va="center", transform=a.transAxes, fontsize=9, color="0.4")
     plt.tight_layout()
     fig.savefig(out / "cross_track.png", dpi=110)
     plt.close(fig)
     for i, r in enumerate(results[:n_replay]):
         plot_replay_trajectory(r, str(out / f"replay_{i}.png"), title=f"Misi 2 replay {i}")
     sr = np.mean([x["success"] for x in rec])
-    log(f"[debug-M2] success {sr * 100:.0f}% | cross-track rata-rata "
-        f"{np.mean(means) if means else float('nan'):.1f} mm | plot -> {out}")
+    ct_txt = f"{np.mean(means):.1f} mm" if means else "- (tidak ada episode yang masuk fase B)"
+    log(f"[debug-M2] success {sr * 100:.0f}% | cross-track rata-rata {ct_txt} | plot -> {out}")
     return {"success_rate": float(sr), "cross_track_mean_mm": float(np.mean(means)) if means else None}
 
 

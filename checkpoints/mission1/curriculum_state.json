@@ -1,26 +1,44 @@
 {
-  "level": 3,
+  "level": 6,
   "threshold": 0.005,
-  "multiplier": 3.375,
-  "timesteps": 1765344,
+  "multiplier": 2.9859839999999993,
+  "timesteps": 1146092,
   "history": [
     {
       "level": 0,
       "threshold": 0.1,
-      "success_rate": 0.85,
-      "timesteps": 391668
+      "success_rate": 0.91,
+      "timesteps": 291092
     },
     {
       "level": 1,
-      "threshold": 0.05,
+      "threshold": 0.08,
       "success_rate": 0.85,
-      "timesteps": 638552
+      "timesteps": 319828
     },
     {
       "level": 2,
-      "threshold": 0.02,
+      "threshold": 0.06,
+      "success_rate": 0.87,
+      "timesteps": 385116
+    },
+    {
+      "level": 3,
+      "threshold": 0.04,
       "success_rate": 0.85,
-      "timesteps": 1765344
+      "timesteps": 442964
+    },
+    {
+      "level": 4,
+      "threshold": 0.02,
+      "success_rate": 0.89,
+      "timesteps": 924328
+    },
+    {
+      "level": 5,
+      "threshold": 0.01,
+      "success_rate": 0.86,
+      "timesteps": 1146092
     }
   ]
 }

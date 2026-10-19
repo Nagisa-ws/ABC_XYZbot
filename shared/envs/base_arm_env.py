@@ -163,6 +163,13 @@ class BaseArmEnv(gym.Env):
         self._scenario_ok = True
         self._scenario_fail_count = 0
         self.ref_approach_wps: np.ndarray | None = None   # jalur pendekatan tervalidasi (untuk controller referensi)
+        self._R_nominal = np.zeros(9)
+        mj.mju_quat2Mat(self._R_nominal, self._nominal_quat)
+        self._R_nominal = self._R_nominal.reshape(3, 3)
+        self._step_len = 0.0                 # panjang lintasan TCP pada langkah terakhir (m)
+        self._step_lat = 0.0                 # komponen menyamping langkah terakhir terhadap arah ke target (m)
+        self._tilt = 0.0                     # sudut orientasi TCP terhadap orientasi nominal (rad)
+        self._reset_path_stats()
         self._apply_domain_randomization()   # set gravcomp nominal
 
     # ------------------------------------------------------------------ #
@@ -190,6 +197,18 @@ class BaseArmEnv(gym.Env):
 
     def set_reward_overrides(self, **kwargs):
         self.W.update({k: float(v) for k, v in kwargs.items()})
+
+    def set_workspace(self, radius_range=None, height_range=None):
+        """Ubah wilayah sampel target (kurikulum wilayah kerja; berlaku mulai reset berikutnya)."""
+        ws = self.cfg["workspace"]
+        if radius_range is not None:
+            ws["finish_point_radius_range"] = [float(v) for v in radius_range]
+        if height_range is not None:
+            ws["finish_point_height_range"] = [float(v) for v in height_range]
+
+    def set_curriculum_stage(self, stage: int):
+        """Nomor level kurikulum aktif (dicatat di info -> callback memisahkan episode antar level)."""
+        self.curriculum_stage = int(stage)
 
     # ------------------------------------------------------------------ #
     # Workspace & domain randomization
@@ -283,6 +302,7 @@ class BaseArmEnv(gym.Env):
         self._cur_action = np.zeros(6)
         self._update_derived_state()
         self._prev_dist = float(np.linalg.norm(self.active_target() - self.tcp_pos))
+        self._reset_path_stats()
         self._rc = {}
         self._on_reset()
         return self._get_obs(), self._get_info()
@@ -308,6 +328,7 @@ class BaseArmEnv(gym.Env):
             mujoco.mj_step(self.model, self.data)
         self.step_count += 1
         self._update_derived_state()
+        self._update_path_stats(action)
 
         reward, terminated, reason = self._compute_reward_and_termination()
         truncated = (not terminated) and self.step_count >= self.max_steps
@@ -324,7 +345,72 @@ class BaseArmEnv(gym.Env):
         if terminated or truncated:
             info["final_distance"] = float(np.linalg.norm(self.active_target() - self.tcp_pos))
             info["final_phase"] = int(self.phase)
+            info.update(self.path_stats())
         return obs, float(reward), bool(terminated), bool(truncated), info
+
+    # ------------------------------------------------------------------ #
+    # Statistik kualitas lintasan (per episode -> info saat episode selesai)
+    # ------------------------------------------------------------------ #
+    def _reset_path_stats(self):
+        self._prev_tcp = self.data.site_xpos[self.tcp_site_id].copy()
+        self._start_tcp = self._prev_tcp.copy()
+        self._R_prev = self.data.site_xmat[self.tcp_site_id].reshape(3, 3).copy()
+        self._len_a = 0.0                     # panjang lintasan selama fase A (atau seluruh episode Misi 1)
+        self._len_all = 0.0
+        self._rot_travel = 0.0                # total sudut putar orientasi TCP (rad)
+        self._tilt_sum = 0.0
+        self._da_sum = 0.0                    # jumlah ||a_t - a_{t-1}||^2
+        self._n_stat = 0
+        self._step_len = 0.0
+        self._step_lat = 0.0
+        self._tilt = 0.0
+
+    @staticmethod
+    def _rot_angle(R1: np.ndarray, R2: np.ndarray) -> float:
+        c = (np.trace(R1.T @ R2) - 1.0) * 0.5
+        return float(np.arccos(np.clip(c, -1.0, 1.0)))
+
+    def _update_path_stats(self, action: np.ndarray):
+        tcp = self.data.site_xpos[self.tcp_site_id]
+        R = self.data.site_xmat[self.tcp_site_id].reshape(3, 3)
+        dp = tcp - self._prev_tcp
+        self._step_len = float(np.linalg.norm(dp))
+        # komponen gerak MENYAMPING terhadap arah ke target aktif (dihitung dari posisi sebelum langkah)
+        tgt = self.active_target()
+        if tgt is not None:
+            u = tgt - self._prev_tcp
+            nu = float(np.linalg.norm(u))
+            self._step_lat = float(np.linalg.norm(dp - np.dot(dp, u / nu) * (u / nu))) if nu > 1e-6 else 0.0
+        else:
+            self._step_lat = 0.0
+        self._tilt = self._rot_angle(self._R_nominal, R)
+        self._len_all += self._step_len
+        if self.phase == 0:
+            self._len_a += self._step_len
+        self._rot_travel += self._rot_angle(self._R_prev, R)
+        self._tilt_sum += self._tilt
+        self._da_sum += float(np.sum((action - self._prev_action) ** 2))
+        self._n_stat += 1
+        self._prev_tcp = tcp.copy()
+        self._R_prev = R.copy()
+
+    def path_stats(self) -> dict:
+        """Ringkasan kualitas lintasan episode berjalan.
+
+        path_ratio_A : panjang lintasan fase A / jarak lurus titik awal -> T1 (1.0 = lurus sempurna)
+        rot_travel_deg / tilt_mean_deg : total putaran & rata-rata kemiringan gripper terhadap pose nominal
+        action_jerk : rata-rata ||a_t - a_{t-1}||^2 (0 = aksi konstan)
+        """
+        n = max(self._n_stat, 1)
+        straight = float(np.linalg.norm(self.T1 - self._start_tcp)) if self.T1 is not None else 0.0
+        out = {"path_length": self._len_all, "rot_travel_deg": float(np.degrees(self._rot_travel)),
+               "tilt_mean_deg": float(np.degrees(self._tilt_sum / n)), "action_jerk": self._da_sum / n}
+        # rasio hanya bermakna bila fase A selesai (T1 tercapai) atau episode Misi 1 sukses
+        reached_t1 = (self.phase == 1) or (self.T2 is None and straight > 0 and
+                                            float(np.linalg.norm(self.T1 - self.tcp_pos)) <= self.success_pos_threshold)
+        if straight > 0.05 and reached_t1:
+            out["path_ratio_A"] = self._len_a / straight
+        return out
 
     # ------------------------------------------------------------------ #
     # State turunan (kinematika, kontak, clearance)
@@ -415,7 +501,9 @@ class BaseArmEnv(gym.Env):
             "phase": int(self.phase),
             "n_obstacles": int(self.obstacle_points.shape[0]),
             "payload_mass_extra": float(self._payload_mass_extra),
+            "gravity_scale": float(self._gravity_scale),
             "success_threshold": float(self.success_pos_threshold),
+            "curriculum_stage": int(getattr(self, "curriculum_stage", -1)),
             "scenario_ok": bool(self._scenario_ok),
         }
 
@@ -426,24 +514,60 @@ class BaseArmEnv(gym.Env):
         return float(self.W.get(key, default))
 
     def _common_reward_terms(self, dist: float) -> float:
-        """time + distance + progress (simetris) + smoothness. Dicatat di self._rc."""
+        """time + distance + progress (simetris) + smoothness (+ kualitas lintasan). Dicatat di self._rc.
+
+        Suku kualitas lintasan (bobot 0 = nonaktif, perilaku lama):
+          lateral_motion_penalty   R_lat = -w_lat * ||dp_perp||, dp_perp = komponen langkah TCP yang tegak lurus
+              arah ke target aktif. Progress shaping bersifat teleskopik: total imbalannya sama untuk jalur lurus
+              maupun berliuk, jadi tanpa suku ini jalur berliuk hampir gratis (terukur). R_lat hanya menghukum
+              gerak menyamping; gerak maju ke target tidak dikenai biaya.
+          path_length_penalty      R_len = -w_len * ||p_t - p_{t-1}|| (alternatif; ikut menghukum gerak maju)
+          orientation_penalty      R_ori = -w_ori * theta^2, theta = sudut orientasi TCP thd pose nominal (rad)
+          rotation_effort_penalty  R_rot = -w_rot * ||a_rot||^2
+              Misi 1-3 tidak punya tugas orientasi; tanpa kedua suku ini aksi rotasi tidak mendapat sinyal
+              apa pun dan terukur jenuh (|a_rot| ~0.9) sehingga gripper terus bergoyang di batas kerucut 30 deg.
+        """
         r_time = self._w("time_penalty")
         r_dist = -abs(self._w("distance_penalty", 0.5)) * dist          # -w_d * ||P_t - P_ee||
         r_prog = self._w("progress_weight") * (self._prev_dist - dist)  # simetris (tidak bias)
         r_smooth = self._smoothness_term()
+        r_lat = -abs(self._w("lateral_motion_penalty")) * self._step_lat
+        r_len = -abs(self._w("path_length_penalty")) * self._step_len
+        r_ori = -abs(self._w("orientation_penalty")) * self._tilt ** 2
+        r_rot = -abs(self._w("rotation_effort_penalty")) * float(np.sum(self._cur_action[3:] ** 2))
         self._prev_dist = dist
-        self._rc = {"time": r_time, "distance": r_dist, "progress": r_prog, "smooth": r_smooth}
-        return r_time + r_dist + r_prog + r_smooth
+        self._rc = {"time": r_time, "distance": r_dist, "progress": r_prog, "smooth": r_smooth,
+                    "lateral": r_lat, "path_length": r_len, "orientation": r_ori, "rotation_effort": r_rot}
+        return r_time + r_dist + r_prog + r_smooth + r_lat + r_len + r_ori + r_rot
 
     def _smoothness_term(self) -> float:
-        """-w_s * ||a_t - a_{t-1}||^2 pada aksi ternormalisasi (bukan target sendi).
-        (Versi lama membandingkan target sendi (rad) dengan aksi [-1,1] -> tidak bermakna.)"""
+        """-w_s * min(||a_t - a_{t-1}||^2, cap) pada aksi ternormalisasi (bukan target sendi).
+
+        `smoothness_cap` (default: tanpa batas) membatasi penalti per langkah. Policy awal dengan std aksi 1
+        menghasilkan ||da||^2 ~ 12 per langkah; tanpa batas penalti ini mendominasi reward (-1.9/langkah pada
+        w=0.3, terukur) dan membuat menabrak (episode berhenti) lebih murah daripada terus bergerak.
+        Gerakan wajar (||da||^2 < cap) tidak terpengaruh."""
         delta = self._cur_action - self._prev_action
-        return -abs(self._w("smoothness_penalty", 0.01)) * float(np.sum(delta ** 2))
+        cap = self.W.get("smoothness_cap")
+        val = float(np.sum(delta ** 2))
+        if cap is not None:
+            val = min(val, float(cap))
+        return -abs(self._w("smoothness_penalty", 0.01)) * val
+
+    def _failure_penalty(self, base: float) -> float:
+        """Penalti terminasi gagal (kontak/tabrakan) + c * sisa langkah episode.
+
+        Tanpa suku sisa-langkah, menabrak bernilai tetap (mis. -10) sedangkan meneruskan episode yang buruk
+        bisa jauh lebih negatif (penalti per langkah x sisa langkah): policy lalu belajar SENGAJA menabrak untuk
+        mengakhiri episode (terukur: 22 dari 30 episode eval berakhir di lantai). Dengan c >= penalti per langkah
+        tipikal, mengakhiri episode lebih awal tidak pernah lebih murah. c = 0 -> perilaku lama."""
+        c = abs(self._w("failure_penalty_per_remaining_step", 0.0))
+        return float(base) - c * max(self.max_steps - self.step_count, 0)
 
     def _contact_termination(self):
         """Return (penalty, terminated, reason) untuk kontak self/lantai."""
         if self.terminate_on_contact and self._contact_reason is not None:
-            self._rc["contact"] = self._w("contact_penalty", -10.0)
-            return self._w("contact_penalty", -10.0), True, self._contact_reason
+            pen = self._failure_penalty(self._w("contact_penalty", -10.0))
+            self._rc["contact"] = pen
+            return pen, True, self._contact_reason
         return 0.0, False, None

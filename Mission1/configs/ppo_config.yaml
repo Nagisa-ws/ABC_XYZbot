@@ -8,13 +8,13 @@ runtime:
   progress_print_interval_sec: 15
 
 run:
-  timesteps: 10_000_000
+  timesteps: 7_500_000
   n_envs: 4
   vec_env: auto                  # auto | subproc | dummy
   seed: 4
   logdir: checkpoints/mission1/tb_logs
   ckpt_dir: checkpoints/mission1
-  ckpt_freq: 1_000_000             # checkpoint periodik (model + VecNormalize)
+  ckpt_freq: 2_500_000             # checkpoint periodik (model + VecNormalize)
   eval_freq: 100_000              # evaluasi deterministik -> best_model
   eval_episodes: 50
 
@@ -30,9 +30,17 @@ ppo:
   ent_coef: 0.003
   vf_coef: 0.5
   max_grad_norm: 0.5
+  log_std_init: -0.5             # std eksplorasi awal 0.6 (default SB3 1.0 -> banyak aksi terpotong di +-1)
   net_arch: [256, 256]           # sama di SEMUA misi (syarat transfer bobot)
   activation_fn: tanh
   target_kl: 0.03
+
+resume:                          # lanjutkan training yang terhenti (Ctrl+C) / tambah langkah, alih-alih mulai dari nol
+  enabled: false                 # true -> run.timesteps = jumlah langkah TAMBAHAN
+  model: checkpoints/mission1/final_model.zip          # final_model (terakhir) atau best_model / periodic/...
+  vecnormalize: checkpoints/mission1/final_vecnormalize.pkl
+  curriculum_state: checkpoints/mission1/curriculum_state.json   # level kurikulum dipulihkan (Misi 1 & 3)
+  # Transfer dan pemanasan critic dilewati; best_model lama hanya diganti bila hasil baru lebih baik.
 
 normalization:
   clip_obs: 10.0
@@ -62,6 +70,15 @@ debug:
 adaptive:
   enabled: true
   thresholds: [0.10, 0.08, 0.06, 0.04, 0.02, 0.01, 0.005]   # r_thresh: 10 cm -> 5 cm -> 2 cm -> 5 mm
+  # OPSIONAL - kurikulum wilayah kerja (target diperlebar bertahap agar mencakup titik awal T1 Misi 3).
+  # Aktifkan dengan mengganti `thresholds` di atas dan membuka komentar `workspace_schedule` di bawah.
+  # Terukur: memperlambat Misi 1 ~2x; presisi <= 2 cm di wilayah lebar belum terbukti (lihat PERBAIKAN_V2.md).
+  # Bila dipakai, gunakan juga wilayah yang sama di Mission2/configs/domain_randomization.yaml.
+  # thresholds: [0.10, 0.10, 0.10, 0.08, 0.06, 0.04, 0.02, 0.01, 0.005]
+  # workspace_schedule:
+  #   0: {radius_range: [0.35, 0.48], height_range: [0.25, 0.45]}     # wilayah lama (sempit)
+  #   1: {radius_range: [0.30, 0.66], height_range: [0.10, 0.60]}     # tengah
+  #   2: {radius_range: [0.25, 0.85], height_range: [-0.03, 0.74]}    # lebar: mencakup T1 Misi 3
   success_rate_to_advance: 0.85           # naik level bila success rate >= 85%
   check_every_n_episodes: 50
   window_episodes: 100

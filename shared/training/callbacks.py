@@ -25,6 +25,8 @@ from stable_baselines3.common.vec_env import sync_envs_normalization
 from shared.debug_common.common import format_duration
 
 REASONS = ("success", "timeout", "collision", "self_collision", "floor_contact")
+# metrik kualitas lintasan per episode (diisi BaseArmEnv.path_stats() saat episode selesai)
+PATH_KEYS = ("path_ratio_A", "rot_travel_deg", "tilt_mean_deg", "action_jerk")
 
 
 # ---------------------------------------------------------------------- #
@@ -38,7 +40,7 @@ class ProgressCallback(BaseCallback):
 
     def _on_training_start(self):
         self._t0 = self._last = time.time()
-        self._n0 = self.num_timesteps
+        self._n0 = self.num_timesteps            # > 0 saat training dilanjutkan (resume)
 
     def _on_step(self) -> bool:
         now = time.time()
@@ -50,7 +52,7 @@ class ProgressCallback(BaseCallback):
             extra = ""
             if self.reason_cb is not None and self.reason_cb.n_episodes > 0:
                 extra = f" | success={self.reason_cb.rate('success') * 100:.0f}%"
-            print(f"[train] {self.num_timesteps}/{self.total} ({100 * done / self.total:.1f}%)"
+            print(f"[train] {self.num_timesteps}/{self._n0 + self.total} ({100 * done / self.total:.1f}%)"
                   f" | {sps:.0f} SPS | elapsed={format_duration(now - self._t0)}"
                   f" | ETA={format_duration(eta) if np.isfinite(eta) else '?'}{extra}", flush=True)
         return True
@@ -66,7 +68,7 @@ class ReasonRateCallback(BaseCallback):
         self._reasons: deque = deque(maxlen=self.window)
         self._extras: dict[str, deque] = {k: deque(maxlen=self.window) for k in
                                           ("final_distance", "cross_track_mean", "cross_track_max",
-                                           "min_clearance")}
+                                           "min_clearance", *PATH_KEYS)}
         self.n_episodes = 0
 
     # ---- akses statistik (dipakai callback lain) ----
@@ -116,9 +118,13 @@ class AdaptiveThresholdCallback(BaseCallback):
 
     def __init__(self, thresholds, advance_rate=0.85, check_every=50, warmup=100,
                  window=100, multiplier_per_level=1.5, eval_env=None,
-                 state_path: str | None = None, reason_cb: ReasonRateCallback | None = None):
+                 state_path: str | None = None, reason_cb: ReasonRateCallback | None = None,
+                 workspace_schedule: dict | None = None):
         super().__init__()
         self.thresholds = [float(t) for t in thresholds]
+        # {indeks_level: {radius_range, height_range}}: wilayah kerja target per level (opsional).
+        # Level tanpa entri memakai entri level sebelumnya yang terdekat.
+        self.workspace_schedule = {int(k): dict(v) for k, v in (workspace_schedule or {}).items()}
         self.advance_rate = float(advance_rate)
         self.check_every = int(check_every)
         self.warmup = int(warmup)
@@ -145,10 +151,19 @@ class AdaptiveThresholdCallback(BaseCallback):
     def is_final_level(self) -> bool:
         return self.level >= len(self.thresholds) - 1
 
+    @property
+    def workspace(self) -> dict | None:
+        keys = [k for k in self.workspace_schedule if k <= self.level]
+        return self.workspace_schedule[max(keys)] if keys else None
+
     def _apply(self):
+        ws = self.workspace
         for env in (self.training_env, self.eval_env):
             if env is not None:
                 env.env_method("set_curriculum", self.threshold, self.multiplier)
+                env.env_method("set_curriculum_stage", self.level)
+                if ws is not None:
+                    env.env_method("set_workspace", ws.get("radius_range"), ws.get("height_range"))
 
     def _save(self):
         if self.state_path:
@@ -161,14 +176,17 @@ class AdaptiveThresholdCallback(BaseCallback):
     def _on_training_start(self):
         self._apply()
         self._save()
-        print(f"[adaptive] level 0: threshold={self.threshold * 100:.1f} cm, "
-              f"success x{self.multiplier:.2f}", flush=True)
+        ws = self.workspace
+        wtxt = (f", wilayah r={ws.get('radius_range')} h={ws.get('height_range')}" if ws else "")
+        print(f"[adaptive] level {self.level}: threshold={self.threshold * 100:.1f} cm, "
+              f"success x{self.multiplier:.2f}{wtxt}", flush=True)
 
     def _on_step(self) -> bool:
         for done, info in zip(self.locals["dones"], self.locals["infos"]):
             if not done:
                 continue
-            if abs(float(info.get("success_threshold", -1)) - self.threshold) > 1e-9:
+            if int(info.get("curriculum_stage", self.level)) != self.level or \
+                    abs(float(info.get("success_threshold", -1)) - self.threshold) > 1e-9:
                 continue                       # episode dari level sebelumnya
             self._buf.append(1.0 if info.get("termination_reason") == "success" else 0.0)
             self._eps_at_level += 1
@@ -186,8 +204,10 @@ class AdaptiveThresholdCallback(BaseCallback):
                     self._eps_at_level = 0
                     self._apply()
                     self._save()
+                    ws = self.workspace
+                    wtxt = (f", wilayah r={ws.get('radius_range')} h={ws.get('height_range')}" if ws else "")
                     print(f"[adaptive] NAIK ke level {self.level}: threshold="
-                          f"{self.threshold * 100:.1f} cm, success x{self.multiplier:.2f} "
+                          f"{self.threshold * 100:.1f} cm, success x{self.multiplier:.2f}{wtxt} "
                           f"(success rate {rate * 100:.0f}% @ {self.num_timesteps} steps)", flush=True)
         return True
 
@@ -195,6 +215,9 @@ class AdaptiveThresholdCallback(BaseCallback):
         self.logger.record("curriculum/level", self.level)
         self.logger.record("curriculum/threshold_m", self.threshold)
         self.logger.record("curriculum/success_reward_multiplier", self.multiplier)
+        ws = self.workspace
+        if ws is not None and ws.get("radius_range") is not None:
+            self.logger.record("curriculum/workspace_r_max", float(ws["radius_range"][1]))
 
 
 # ---------------------------------------------------------------------- #
@@ -338,7 +361,7 @@ class BestModelEvalCallback(BaseCallback):
 
     def __init__(self, eval_env, n_episodes: int = 20, eval_freq: int = 25_000,
                  save_dir: str = "checkpoints", level_fn=None, max_steps: int = 2000,
-                 eval_seed: int = 424_242, eval_at_start: bool = False):
+                 eval_seed: int = 424_242, eval_at_start: bool = False, initial_best: dict | None = None):
         super().__init__()
         self.eval_env = eval_env
         self.n_episodes = int(n_episodes)
@@ -351,11 +374,22 @@ class BestModelEvalCallback(BaseCallback):
         self._best_key = None
         self._last_eval = 0
         self.best_info: dict = {}
+        if initial_best:                       # resume: best_model lama hanya diganti oleh yang lebih baik
+            self.best_info = dict(initial_best)
+            self._best_key = self._key(initial_best, int(initial_best.get("level", 0)))
+
+    @staticmethod
+    def _key(res: dict, lvl: int):
+        # kriteria: (level curriculum, success rate, -ketelitian). Ketelitian = cross-track bila ada
+        # (tugas path), selain itu jarak akhir. Mean reward tidak dipakai (skalanya berubah).
+        precision = res.get("cross_track_mean", res.get("mean_final_dist", float("inf")))
+        return (lvl, round(float(res["success_rate"]), 4), -float(precision))
 
     def _evaluate(self) -> dict:
         sync_envs_normalization(self.training_env, self.eval_env)
         rets, succ, dists, steps, reasons = [], [], [], [], Counter()
         ct_mean, min_cl = [], []
+        path = {k: [] for k in PATH_KEYS}
         for ep in range(self.n_episodes):
             self.eval_env.seed(self.eval_seed + ep)
             obs = self.eval_env.reset()
@@ -375,6 +409,9 @@ class BestModelEvalCallback(BaseCallback):
                 ct_mean.append(float(info["cross_track_mean"]))
             if "min_clearance" in info:
                 min_cl.append(float(info["min_clearance"]))
+            for k in PATH_KEYS:
+                if k in info and np.isfinite(info[k]):
+                    path[k].append(float(info[k]))
         res = {"success_rate": float(np.mean(succ)), "mean_return": float(np.mean(rets)),
                "mean_steps": float(np.mean(steps)), "mean_final_dist": float(np.nanmean(dists)),
                "reasons": dict(reasons)}
@@ -382,6 +419,9 @@ class BestModelEvalCallback(BaseCallback):
             res["cross_track_mean"] = float(np.mean(ct_mean))
         if min_cl:
             res["min_clearance"] = float(np.min(min_cl))
+        for k, v in path.items():
+            if v:
+                res[k] = float(np.median(v))
         return res
 
     def _run_and_maybe_save(self, tag: str = ""):
@@ -390,10 +430,7 @@ class BestModelEvalCallback(BaseCallback):
         for k, v in res.items():
             if isinstance(v, (int, float)):
                 self.logger.record(f"eval/{k}", v)
-        # kriteria: (level curriculum, success rate, -ketelitian). Ketelitian = cross-track bila ada
-        # (tugas path), selain itu jarak akhir. Mean reward tidak dipakai (skalanya berubah).
-        precision = res.get("cross_track_mean", res["mean_final_dist"])
-        key = (lvl, round(res["success_rate"], 4), -precision)
+        key = self._key(res, lvl)
         improved = self._best_key is None or key > self._best_key
         if improved:
             self._best_key = key
@@ -404,8 +441,10 @@ class BestModelEvalCallback(BaseCallback):
             (self.save_dir / "best_model_info.json").write_text(json.dumps(self.best_info, indent=2),
                                                                 encoding="utf-8")
         ct = f" cross-track={res['cross_track_mean'] * 1000:.0f}mm" if "cross_track_mean" in res else ""
+        pq = (f" rasio-jalur={res['path_ratio_A']:.2f}" if "path_ratio_A" in res else "") + \
+             (f" putaran-gripper={res['rot_travel_deg']:.0f}deg" if "rot_travel_deg" in res else "")
         print(f"[eval]{tag} steps={self.num_timesteps} level={lvl} success={res['success_rate'] * 100:.0f}%"
-              f" final_dist={res['mean_final_dist'] * 100:.1f}cm{ct} reasons={res['reasons']}"
+              f" final_dist={res['mean_final_dist'] * 100:.1f}cm{ct}{pq} reasons={res['reasons']}"
               f"{'  <- best' if improved else ''}", flush=True)
 
     def _on_training_start(self):

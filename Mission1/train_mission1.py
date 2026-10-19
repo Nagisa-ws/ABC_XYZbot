@@ -47,7 +47,8 @@ def build_callbacks(ctx):
         thresholds=a["thresholds"], advance_rate=a["success_rate_to_advance"],
         check_every=a["check_every_n_episodes"], warmup=a["warmup_episodes"],
         window=a.get("window_episodes", 100), multiplier_per_level=a["reward_success_multiplier"],
-        eval_env=ctx.eval_env, state_path=str(ctx.ckpt_dir / "curriculum_state.json"))
+        eval_env=ctx.eval_env, state_path=str(ctx.ckpt_dir / "curriculum_state.json"),
+        workspace_schedule=a.get("workspace_schedule"))
     ctx.level_fn = lambda: cb.level
     return [cb]
 

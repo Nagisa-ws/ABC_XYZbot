@@ -5,6 +5,8 @@ robot_dynamics:
   gravity_scale_range: [0.98, 1.02]
 randomization: {init_joint_noise: 0.05, obs_noise_std: 0.005}
 workspace:
+  # sama dengan Misi 1. Bila kurikulum wilayah kerja Misi 1 diaktifkan, pakai wilayah akhirnya di sini:
+  # finish_point_radius_range: [0.25, 0.85], finish_point_height_range: [-0.03, 0.74]
   finish_point_radius_range: [0.35, 0.48]
   finish_point_height_range: [0.25, 0.45]
   finish_point_azimuth_range: [-3.1416, 3.1416]
@@ -15,9 +17,14 @@ ik: {max_iters: 60, pos_tol: 0.0001, rot_tol: 0.002, rot_weight: 0.5}
 safety: {terminate_on_contact: true, gripper_collision_radius: 0.04}
 validation: {max_scenario_attempts: 40, ik_pos_tol: 0.002, waypoint_step: 0.04}
 episode: {max_steps: 300, success_pos_threshold: 0.02}
-reward: {time_penalty: -0.02, distance_penalty: 0.5, progress_weight: 20.0, smoothness_penalty: 0.05,
+reward: {time_penalty: -0.02, distance_penalty: 0.5, progress_weight: 20.0, smoothness_penalty: 0.1,
   contact_penalty: -10.0, cross_track_penalty: 150.0, phase_transition_bonus: 5.0,
-  success_reward: 20.0}
+  success_reward: 20.0,
+  # kualitas lintasan (sama dengan Misi 1; lihat BaseArmEnv._common_reward_terms)
+  lateral_motion_penalty: 20.0, orientation_penalty: 1.0, rotation_effort_penalty: 0.05,
+  smoothness_cap: 1.0,
+  # penalti gagal = penalti dasar - c * sisa langkah (cegah insentif sengaja menabrak; lihat Misi 1)
+  failure_penalty_per_remaining_step: 1.0}
 path_task:
   t1_reach_threshold: 0.02
   cross_track_cap: 0.08          # d_perp dibatasi 8 cm di dalam penalti (cegah ledakan return/value loss)
